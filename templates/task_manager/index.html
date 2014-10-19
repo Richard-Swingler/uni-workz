@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="description" content="">
+    <meta name="author" content="">
+   
+
+    <title>Student collaborator</title>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/jquery-ui.css" />
+    <script src="../../static/js/jquery-1.11.1.min.js"></script>
+    <script src="../../static/js/jquery-ui.js"></script>
+    <style>
+      ul.connectedSortable {
+        list-style-type: none;
+        list-style-type: none;
+        list-style-position:inside;
+        margin:0;
+        padding:0;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Student collaborator</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/timetable">Meeting scheduler</a></li>
+            <li><a href="/projectOverview">Project overview</a></li>
+            <li><a href="/admin">Admin</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="starter-template text-left">
+        <h1>Task manager</h1>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="list-group">
+              <a href="#" class="list-group-item active">
+                To Do <span  data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-plus" style="float:right" id="task1" data-toggle="tooltip" data-placement="left" title="Add a Task"></span>
+              </a>
+              <ul id="sortable1" class="connectedSortable">
+                <li><a href="#" class="list-group-item">Dapibus ac facilisis in</a></li>
+                <li><a href="#" class="list-group-item">Morbi leo risus</a></li>
+                <li><a href="#" class="list-group-item">Porta ac consectetur ac</a></li>
+                <li><a href="#" class="list-group-item">Vestibulum at eros</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="list-group">
+              <a href="#" class="list-group-item active">
+                In Progress <span data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-plus" style="float:right" id="task2" data-toggle="tooltip" data-placement="left" title="Add a Task"></span>
+              </a>
+              <ul id="sortable2" class="connectedSortable">
+                <li><a href="#" class="list-group-item">Dapibus ac facilisis in</a></li>
+                <li><a href="#" class="list-group-item">Morbi leo risus</a></li>
+                <li><a href="#" class="list-group-item">Porta ac consectetur ac</a></li>
+                <li><a href="#" class="list-group-item">Vestibulum at eros</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="list-group">
+              <a href="#" class="list-group-item active">
+                Done! <span  data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-plus" style="float:right" id="task3" data-toggle="tooltip" data-placement="left" title="Add a Task"></span>
+              </a>
+              <ul id="sortable2" class="connectedSortable">
+                <li><a href="#" class="list-group-item">Dapibus ac facilisis in</a></li>
+                <li><a href="#" class="list-group-item">Morbi leo risus</a></li>
+                <li><a href="#" class="list-group-item">Porta ac consectetur ac</a></li>
+                <li><a href="#" class="list-group-item">Vestibulum at eros</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      <!-- Modal -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body">
+              <form class="form-horizontal" role="form">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Task Name:</label>
+                  <div class="col-sm-10">
+                    <input type="email" class="form-control" id="inputEmail3" placeholder="e.g. Design Stage">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-2 control-label">Description</label>
+                  <div class="col-sm-10">
+                    <input type="password" class="form-control" id="inputPassword3" placeholder="Enter your comments here...">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox"> Remember me
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Sign in</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+  <script>
+      $(function() {
+        $( "#sortable1, #sortable2, #sortable3" ).sortable({
+          connectWith: ".connectedSortable"
+        }).disableSelection();
+      });
+      
+      $('#task1, #task2, #task3').tooltip();
+      
+    </script>
+  </body>
+</html>
