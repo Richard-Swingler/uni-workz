@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app='task_manager' lang="en">
+<html ng-app='task_manager'  lang="en">
   <head>
     <meta name="description" content="">
     <meta name="author" content="">
@@ -25,7 +25,7 @@
     </style>
   </head>
 
-  <body >
+  <body  ng-controller="task_manager_ctrl">
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -60,7 +60,7 @@
                 To Do <span  data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-plus" style="float:right" id="task1" data-toggle="tooltip" data-placement="left" title="Add a Task"></span>
               </a>
 
-              <ul id="sortable1" class="connectedSortable" ng-controller="task_manager_ctrl">
+              <ul id="sortable1" class="connectedSortable">
                 <li><a href="#" class="list-group-item" ng-init="initialize('hello mate')">{$ aaa $} </a></li>
                 <li  ng-repeat="item in items"><a href="#" class="list-group-item" >{$ item.name $}</a></li>
                 <li><a href="#" class="list-group-item"></a></li>
@@ -153,7 +153,10 @@
   <script>
       $(function() {
         $( "#sortable1, #sortable2, #sortable3" ).sortable({
-          connectWith: ".connectedSortable"
+          connectWith: ".connectedSortable",
+          stop: function(event, position){
+            updateItem('data');
+          }
         }).disableSelection();
       });
       

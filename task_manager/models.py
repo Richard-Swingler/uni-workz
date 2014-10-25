@@ -11,5 +11,5 @@ class Task(models.Model):
 class TaskSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Task
-		ordering = ['name']
 		fields = ('id', 'name')
+

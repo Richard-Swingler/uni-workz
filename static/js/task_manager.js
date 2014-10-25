@@ -14,6 +14,13 @@ taskManager.controller('task_manager_ctrl', function($scope, $http) {
 			$scope.items = response.data;
 		});
 	};
-
+	$scope.updateItem = function(data){
+		aler('>>');
+		$http.put('/api/update/').then(function(){
+			alert('might have done something');
+			alert('maybe');
+			alert('possibly');
+		});
+	}
 	$scope.loadItems();
 });
