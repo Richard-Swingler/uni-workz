@@ -50,7 +50,7 @@
     </div>
 
     <div class="container">
-  
+
       <div class="starter-template text-left" >
         <h1>Task manager</h1>
         <div class="row">
@@ -146,14 +146,21 @@
       </div>
 
 
-
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h3 align="center">Activity Stream</h3>
+        {% for log in logs %}
+        <div class="list-group">
+        <a class="list-group-item" href="#">
+            <h4 class="list-group-item-heading">{% if not log.user.first_name and not log.user.last_name %} {{ log.user }} {% endif %} {% if log.user.first_name and log.user.last_name %} {{ log.user.first_name }} {{ log.user.last_name }} {% endif %} at {{ log.timestamp }}</h4>
+            <p class="list-group-item-text">{{ log.action }}</p>
+        </a>
+        </div>
+        {% endfor %}
+        </div><!-- /.blog-sidebar --></div>
 
     </div>
-	<div>
-	{% block content %}
 
-	{% endblock %}
-	</div>
   <script>
       $(function() {
         $( "#sortable1, #sortable2, #sortable3" ).sortable({

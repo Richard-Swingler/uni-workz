@@ -5,7 +5,7 @@ from .models import Task, TaskSerializer
 
 def index(request):
     logs = Log.objects.all() [:5]
-    return render(request, 'task_manager/index.html', {'logs' : logs})
+    return render(request, 'task_manager/index.html', {'logs': logs})
 
 class TaskList(generics.ListCreateAPIView):
 	model = Task
