@@ -49,6 +49,8 @@ INSTALLED_APPS = (
     'timetable',
     'project_overview',
     'rest_framework',
+    'eventlog',
+    'sidebar',
 )
 
 MIDDLEWARE_CLASSES = (

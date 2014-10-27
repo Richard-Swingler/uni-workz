@@ -1,0 +1,44 @@
+{% extends 'blog/base.html' %}
+{% block title %}Index{% endblock %}
+{% block content %}
+    <div class="container">
+
+      <div class="blog-header">
+        <h1 class="blog-title">The Blog</h1>
+        <p class="lead blog-description">The official example template of creating a blog with Bootstrap.</p>
+      </div>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+{% for post in posts %}
+          <div class="blog-post">
+            <h2 class="blog-post-title">{{ post.title }}</h2>
+            <p class="blog-post-meta">{{ post.created }} by <a href="#">{{ post.author }}</a></p>
+            <p>{{ post.description }}</p>
+            <p> <a href="{{ post.get_absolute_url }}">Read More</a> </p>
+          </div><!-- /.blog-post -->
+{% endfor %}
+
+          <ul class="pager">
+            <li><a href="#">Previous</a></li>
+            <li><a href="#">Next</a></li>
+          </ul>
+
+        </div><!-- /.blog-main -->
+
+        <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h3 align="center">Activity Stream</h3>
+        {% for log in logs %}
+        <div class="list-group">
+        <a class="list-group-item" href="#">
+            <h4 class="list-group-item-heading">{% if not log.user.first_name and not log.user.last_name %} {{ log.user }} {% endif %} {% if log.user.first_name and log.user.last_name %} {{ log.user.first_name }} {{ log.user.last_name }} {% endif %} at {{ log.timestamp }}</h4>
+            <p class="list-group-item-text">{{ log.action }}</p>
+        </a>
+        </div>
+        {% endfor %}
+        </div><!-- /.blog-sidebar -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+{% endblock %}

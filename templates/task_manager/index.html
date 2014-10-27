@@ -149,7 +149,11 @@
 
 
     </div>
+	<div>
+	{% block content %}
 
+	{% endblock %}
+	</div>
   <script>
       $(function() {
         $( "#sortable1, #sortable2, #sortable3" ).sortable({
