@@ -36,3 +36,5 @@ task_manager/migrations/0006_auto_20141025_1846.pyc
 =======
 db.sqlite3
 >>>>>>> FETCH_HEAD
+
+*.pyc
