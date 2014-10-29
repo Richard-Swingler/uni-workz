@@ -154,6 +154,7 @@
         <a class="list-group-item" href="#">
             <h4 class="list-group-item-heading">{% if not log.user.first_name and not log.user.last_name %} {{ log.user }} {% endif %} {% if log.user.first_name and log.user.last_name %} {{ log.user.first_name }} {{ log.user.last_name }} {% endif %} at {{ log.timestamp }}</h4>
             <p class="list-group-item-text">{{ log.action }}</p>
+            <p class="list-group-item-text">Post: {{ log.extra }}</p>
         </a>
         </div>
         {% endfor %}
