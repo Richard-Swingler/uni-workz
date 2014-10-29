@@ -1,0 +1,4 @@
+django
+djangorestframework
+eventlog
+django-suit
