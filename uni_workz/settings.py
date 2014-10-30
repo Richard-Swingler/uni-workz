@@ -52,7 +52,6 @@ INSTALLED_APPS = (
     'project_overview',
     'rest_framework',
     'eventlog',
-    'sidebar',
 )
 
 MIDDLEWARE_CLASSES = (
