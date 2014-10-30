@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="col-md-12">
+<h1>Login Form:</h1>
+{% if form.errors %}
+<h1>Sorry, invalid username or password!</h1>
+{% endif %}
+
+<form action="/accounts/auth/" method="post">{% csrf_token %}
+    <label for="username">Username:</label>
+    <input type="text" name="username" value="" id="username">
+    <label for="password">Password:</label>
+    <input type="password" name="password" value="" id="password">
+
+    <input type="submit" value="Login">
+</form>
+</div>
+</body>
+</html>
