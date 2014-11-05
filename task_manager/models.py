@@ -4,8 +4,12 @@ from eventlog.models import log
 from django.contrib.auth.models import User
 
 class Task(models.Model):
-    name = models.TextField()
+    name = models.CharField(max_length=200)
+    description = models.TextField()
     author = models.ForeignKey(User, null=True)
+    startDate = models.DateTimeField('start date')
+    endDate = models.DateTimeField('end date')
+    # assignedUser = models.ForeignKey(User, null=True)
 
     def __unicode__(self):
     	return self.name

@@ -1,3 +1,9 @@
 from django.db import models
 
-# Create your models here.
+class TimeTableItems(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    user = models.ForeignKey(User, null=True)
+    startTime = models.DateTimeField()
+    endDay = models.DateTimeField()
+    day = models.DateTimeField('Day')
