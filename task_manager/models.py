@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class Task(models.Model):
     name = models.CharField(max_length=200)
-    description = models.TextField(null=True)
+    description = models.TextField()
     author = models.ForeignKey(User, null=True)
     startDate = models.DateTimeField('start date')
     endDate = models.DateTimeField('end date')
@@ -22,9 +22,7 @@ class Task(models.Model):
             log(user=self.author, action='Changed a Task',
                 extra={"title": self.name})
 
-        super(Task, self).save(*args, **kwargs)#
-
-
+        super(Task, self).save(*args, **kwargs)
 
 class TaskSerializer(serializers.ModelSerializer):
 	class Meta:
