@@ -10,7 +10,7 @@ taskManager.controller('task_manager_ctrl', function($scope, $http) {
 		$scope.aaa = data;		
 	};
 	$scope.loadItems = function(){
-		$http.get('/api/tasks/').then(function(response){
+		$http.get('/api/v1/tasks/').then(function(response){
 			$scope.items = response.data;
 		});
 	};

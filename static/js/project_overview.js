@@ -9,7 +9,7 @@ projectOverview.controller('project_overview_ctrl', function($scope, $http) {
 		$scope.aaa = data;		
 	};
 	$scope.loadItems = function(){
-		$http.get('/api/tasks/').then(function(response){
+		$http.get('/api/v1/tasks/').then(function(response){
 			$scope.items = response.data;
 		});
 	};
@@ -23,7 +23,7 @@ projectOverview.controller('project_overview_ctrl', function($scope, $http) {
 	}
 
 	$scope.getData = function(){
-		$http.get('/api/tasks/').then(function(response){
+		$http.get('/api/v1/tasks/').then(function(response){
 			var items = response.data;
 			var tasks = [];
 
@@ -31,12 +31,14 @@ projectOverview.controller('project_overview_ctrl', function($scope, $http) {
 				var task = buildTask(items[i].name);
 				tasks.push(task);
 			}
-
+			console.log( new Date(items[0].startDate.substring(0, 10)));
 			var ganttData = [
 				{	
 					id: 1, 
 					name: items[0].name, 
-					series: tasks
+					series: tasks,
+					start:  new Date(items[0].startDate.substring(0, 10)), 
+					end:  new Date(items[0].endDate.substring(0, 10))
 				}
 			];
 
