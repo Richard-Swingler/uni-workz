@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class Task(models.Model):
     name = models.CharField(max_length=200)
-    description = models.TextField()
+    description = models.TextField(null=True)
     author = models.ForeignKey(User, null=True)
     startDate = models.DateTimeField('start date')
     endDate = models.DateTimeField('end date')
