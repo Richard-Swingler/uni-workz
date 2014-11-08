@@ -5,6 +5,4 @@ from .views import *
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
-    url(r'^api/tasks/$', TaskList.as_view(), name='taskList'),
-    url(r'^api/update/$', UpdateTask, name='updateTask'),
 )

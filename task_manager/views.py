@@ -1,18 +1,32 @@
+from django.contrib.auth.models import User, Group
 from django.shortcuts import render
-from rest_framework import generics
 from eventlog.models import Log
-from .models import Task, TaskSerializer
+from rest_framework import viewsets
+from task_manager.models import Task
+from task_manager.serializers import TaskSerializer, UserSerializer, GroupSerializer
 
 def index(request):
     logs = Log.objects.all() [:5]
     return render(request, 'task_manager/index.html', {'logs': logs})
 
-class TaskList(generics.ListCreateAPIView):
-	model = Task
-	serializer_class = TaskSerializer
+class TaskViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Tasks to be viewed or edited.
+    """
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 
-class UpdateTask(generics.UpdateAPIView):
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-	def put(self, request, *args, **kwargs):
-		data = request.DATA
-		serializer_class = TaskSerializer(data=data, many=True)
+
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
