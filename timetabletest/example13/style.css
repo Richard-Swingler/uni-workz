@@ -1,0 +1,81 @@
+/*
+
+Darko Bunic
+http://www.redips.net/
+Oct, 2010.
+
+*/
+
+body {
+	font-family: arial;
+	margin: 0px; /* for IE6 / IE7 */
+}
+
+/* make drag container visible */
+#drag {
+	border: 2px dashed LightBlue;
+	display: table;
+}
+
+/* tables */
+div#drag table {
+	background-color: #f8f8f8;
+	border-collapse: collapse;
+	margin: 10px;	
+}
+
+	/* nested tables level 1 */
+	div#drag .nested_table1 {
+		background-color: #e0e0e0;
+		margin: 7px auto;
+	}
+	/* nested tables level 2 */
+	div#drag .nested_table2 {
+		background-color: #bbb;
+		margin: 7px auto;
+	}
+	/* nested tables level 3 */
+	div#drag .nested_table3 {
+		background-color: #888;
+		margin: 7px auto;
+	}
+
+/* table cells */
+div#drag td {
+	border: 1px solid navy;
+	height: 40px;
+	text-align: center;
+	font-size: 10pt;
+	padding: 2px;
+}
+
+/* drag object (DIV inside table cell) */
+.drag {
+	margin: auto;
+	margin-bottom: 1px;
+	margin-top: 1px;
+	text-align: center;
+	width: 27px;
+	height: 27px;
+	line-height: 27px;
+	border: 2px solid SteelBlue;
+	background-color: white;
+
+}
+
+/* */
+.message {
+	color: grey;
+	font-size: 14px;
+}
+
+/* circle */
+.circle {
+	/* round corners */
+	border-radius: 20px; /* Opera, Chrome */
+	-moz-border-radius: 20px; /* FF */
+}
+
+/* square */
+.square {
+}
