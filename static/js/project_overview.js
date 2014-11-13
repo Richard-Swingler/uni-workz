@@ -14,11 +14,11 @@ projectOverview.controller('project_overview_ctrl', function($scope, $http) {
 		});
 	};
 
-	var buildTask = function (name) {
+	var buildTask = function (name, startDate, endDate) {
 		return {
 			name: name,
-			start: new Date(2010,00,03),
-			end: new Date(2010,00,03)
+			start: startDate,
+			end: endDate
 		};
 	}
 
@@ -28,20 +28,20 @@ projectOverview.controller('project_overview_ctrl', function($scope, $http) {
 			var tasks = [];
 
 			for (var i=0; i<items.length; i++) {
-				var task = buildTask(items[i].name);
+				var task = buildTask(items[i].name,items[i].startDate.substring(0,10), items[i].endDate.substring(0,10));
+				console.log( items[i].startDate.substring(0,10));
+				console.log( items[i].endDate.substring(0,10));
+
 				tasks.push(task);
 			}
-			console.log( new Date(items[0].startDate.substring(0, 10)));
+			
 			var ganttData = [
 				{	
 					id: 1, 
-					name: items[0].name, 
+					name: "Project tasks", 
 					series: tasks,
-					start:  new Date(items[0].startDate.substring(0, 10)), 
-					end:  new Date(items[0].endDate.substring(0, 10))
 				}
 			];
-
 			 $jq("#ganttChart").ganttView({ 
                 data: ganttData,
                 slideWidth: 900,
