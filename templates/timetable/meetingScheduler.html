@@ -51,7 +51,7 @@
         <div style="float:left"> type of view</div> <br/><br/>
 
 
-        <div class="jumbotron">
+        <div class="jumbotron table-responsive" style="overflow:scroll;">
           <!--link to add timetable -->  
 
           <h1>Timetable HERE</h1>
@@ -60,7 +60,50 @@
             <li>allow each users to enter their timetable</li>
             <li>overview of the timetable(individual and all)</li>
           </ul>
-          <p><a class="btn btn-primary btn-lg" role="button">Learn more</a></p>
+          
+
+          <!-- changes -->
+          <table class=" table table-bordered" style="background-color:white; border: solid black;">
+
+            <tr>
+              <td>#</td>
+              <td>8am</td>
+              <td>9am</td>
+              <td>10am</td>
+              <td>11am</td>
+              <td>12pm</td>
+              <td>1pm</td>
+              <td>2pm</td>
+              <td>3pm</td>
+              <td>4pm</td>
+              <td>5pm</td>
+              <td>6pm</td>
+              <td>7pm</td>
+              <td>8pm</td>
+            </tr>
+
+          <script>
+            
+            //for (var i=0; i<7; i++){
+              document.write("<tr>");
+                document.write("<td class='tbody'>Monday</td>");
+                document.write("<td class='tbody' colspan=2 style='background-color: blue; color: white;'>COMP3207</td>");
+                document.write("<td class='tbody'>3</td>");
+              document.write("</tr>");
+            //}
+
+              document.write("<tr>");
+                document.write("<td class='tbody'>Tuesday</td>");
+                document.write("<td class='tbody' colspan=2 style='background-color: gray; color: white;'>some task</td>");
+                document.write("<td class='tbody'>3</td>");
+              document.write("</tr>");
+            
+          </script>
+
+          </table>
+
+
+          <!-- changes end -->
         </div>
         
 
