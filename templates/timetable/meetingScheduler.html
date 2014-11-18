@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<<<<<<< Updated upstream
 <html ng-app='timetable' lang="en">
+=======
+<html ng-app='timetable_manager' lang="en" >
+>>>>>>> Stashed changes
   <head>
     <meta name="description" content="">
     <meta name="author" content="">
@@ -12,10 +16,20 @@
     <link rel="stylesheet" href="../../static/css/jquery-ui.css" />
     <script src="../../static/js/jquery-1.11.1.min.js"></script>
     <script src="../../static/js/jquery-ui.js"></script>
+<<<<<<< Updated upstream
     <script src="../../static/js/timetable.js"></script>
   </head>
 
   <body  ng-controller="timetable_ctrl">
+=======
+
+    <script src="{{ STATIC_URL }}js/angular.min.js" type="text/javascript"></script>
+    <!-- Timetable Controller -->
+    <script src="{{ STATIC_URL }}js/timetable_manager.js"></script>
+  </head>
+
+  <body ng-controller="timetable_manager_ctrl">
+>>>>>>> Stashed changes
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
@@ -81,29 +95,25 @@
               <td>5pm</td>
               <td>6pm</td>
               <td>7pm</td>
-              <td>8pm</td>
+              <td ng-repeat='item in items'>8pm {$ item.name $} </td>
             </tr>
 
           <script>
             
             //for (var i=0; i<7; i++){
-              document.write("<tr>");
+              document.write("<tr ng-repeat='item in items'>");
                 document.write("<td class='tbody'>Monday</td>");
-                document.write("<td class='tbody' colspan=2 style='background-color: blue; color: white;'>COMP3207</td>");
+
+                //check the if it is monday
+                //check the time
+                document.write("<td class='tbody' colspan=2 style='background-color: blue; color: white;'> {$ item.description $} </td>");
                 document.write("<td class='tbody'>3</td>");
               document.write("</tr>");
             //}
-
-              document.write("<tr>");
-                document.write("<td class='tbody'>Tuesday</td>");
-                document.write("<td class='tbody' colspan=2 style='background-color: gray; color: white;'>some task</td>");
-                document.write("<td class='tbody'>3</td>");
-              document.write("</tr>");
             
           </script>
 
           </table>
-
 
           <!-- changes end -->
         </div>
