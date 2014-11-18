@@ -77,7 +77,7 @@ behavior: {
 				container.append(div);
 				
 				var w = jQuery("div.ganttview-vtheader", container).outerWidth() +
-					jQuery("div.ganttview-slide-container", container).outerWidth();
+				jQuery("div.ganttview-slide-container", container).outerWidth();
 	            container.css("width", (w + 2) + "px");
 	            
 	            new Behavior(container, opts).apply();
@@ -170,8 +170,16 @@ behavior: {
 						"css": { "width": (w - 1) + "px" }
 					}).append(monthNames[m] + "/" + y));
 					for (var d in dates[y][m]) {
-						daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
-							.append(dates[y][m][d].getDate()));
+                        //finds todays date and compares it to the date listed
+                        var today = new Date();
+                        if(dates[y][m][d].getDate()===today.getDate()&&dates[y][m][d].getMonth()===today.getMonth()&&dates[y][m][d].getFullYear()===today.getFullYear())
+						{
+                             daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day","id": "today" })
+                            .append(dates[y][m][d].getDate()));
+                        }else{
+                            daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day" })
+                            .append(dates[y][m][d].getDate()));
+                        }
 					}
 				}
 			}
@@ -233,9 +241,9 @@ behavior: {
                         }
                     });
                     addBlockData(block, data[i], series);
-                    if (data[i].series[j].color) {
-                        block.css("background-color", data[i].series[j].color);
-                    }
+                    //changes the colour
+                    block.css("background-color", "red");
+                    
                     block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
                     jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;

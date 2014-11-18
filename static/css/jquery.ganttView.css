@@ -13,6 +13,10 @@ div.ganttview-grid,
 div.ganttview-grid-row-cell {
 	float: left;
 }
+#today{
+	color: red;
+	font-weight: bold;
+}
 
 div.ganttview-hzheader-month,
 div.ganttview-hzheader-day {

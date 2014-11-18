@@ -29,9 +29,6 @@ projectOverview.controller('project_overview_ctrl', function($scope, $http) {
 
 			for (var i=0; i<items.length; i++) {
 				var task = buildTask(items[i].name,items[i].startDate.substring(0,10), items[i].endDate.substring(0,10));
-				console.log( items[i].startDate.substring(0,10));
-				console.log( items[i].endDate.substring(0,10));
-
 				tasks.push(task);
 			}
 			
