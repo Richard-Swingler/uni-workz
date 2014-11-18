@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 class TimetableItem(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
-    weekid = models.
-    userId = models.ForeignKey(User, null=false)
+    userId = models.ForeignKey(User, null=true)
     startDate = models.DateTimeField()
     endDate = models.DateTimeField()
