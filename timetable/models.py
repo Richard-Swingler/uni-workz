@@ -5,5 +5,8 @@ class TimetableItem(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     user = models.ForeignKey(User, null=True)
-    startTime = models.DateTimeField()
-    endTime = models.DateTimeField()
+    startTime = models.IntegerField()
+    endTime = models.IntegerField()
+    day = models.IntegerField()
+
+    #DateTimeField() - for later reference
