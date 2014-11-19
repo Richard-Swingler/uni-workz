@@ -87,9 +87,9 @@
           <script>
             
             //for (var i=0; i<7; i++){
-              document.write("<tr>");
+              document.write("<tr ng-repeat='item in items'>");
                 document.write("<td class='tbody'>Monday</td>");
-                document.write("<td class='tbody' colspan=2 style='background-color: blue; color: white;'>COMP3207</td>");
+                document.write("<td class='tbody' colspan=2 style='background-color: blue; color: white;'>{$ item.name $}</td>");
                 document.write("<td class='tbody'>3</td>");
               document.write("</tr>");
             //}
@@ -110,7 +110,7 @@
         <div>
           <ul id="sortable1" class="connectedSortable">
               <li><a href="#" class="list-group-item" ng-init="initialize('hello mate')">{$ aaa $} </a></li>
-              <li  ng-repeat="item in items"><a href="#" class="list-group-item" >{$ item.name $}</a></li>
+              <li  <a href="#" class="list-group-item" >{$ item.name $}</a></li>
               <li><a href="#" class="list-group-item"></a></li>
              
               <li><a href="#" class="list-group-item">Vestibulum at eros</a></li>
