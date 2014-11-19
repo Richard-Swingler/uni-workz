@@ -83,24 +83,10 @@
               <td>7pm</td>
               <td>8pm</td>
             </tr>
-
-          <script>
-            
-            
-              document.write("<tr ng-repeat='item in items'>");
-                document.write("<td class='tbody'>Monday</td>");
-                document.write("<td class='tbody' colspan=2 style='background-color: blue; color: white;'>{$ item.name $}</td>");
-                document.write("<td class='tbody'>3</td>");
-              document.write("</tr>");
-            
-
-              document.write("<tr>");
-                document.write("<td class='tbody'>Tuesday</td>");
-                document.write("<td class='tbody' colspan=2 style='background-color: gray; color: white;'>some task</td>");
-                document.write("<td class='tbody'>3</td>");
-              document.write("</tr>");
-            
-          </script>
+            <tr ng-repeat='day in days'>
+              <td class='tbody'> day is : {$ day.name $}</td>
+              <td ng-repeat='item in day.items' class='tbody' colspan=1 style='background-color: blue; color: white;'>{$ item.name $}</td>
+            </tr>
 
           </table>
 

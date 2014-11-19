@@ -11,7 +11,38 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 	};
 	$scope.loadItems = function(){
 		$http.get('/api/v1/timetable/').then(function(response){
-			$scope.items = response.data;
+			
+			var items = response.data;
+
+			var days = [{
+				name: 'Monday',
+				items:[]
+			}, {
+				name: 'Tuesday',
+				items:[]
+			}, {
+				name: 'Wednesday',
+				items:[]
+			}, {
+				name: 'Thursday',
+				items:[]
+			}, {
+				name: 'Friday',
+				items:[]
+			}];
+
+			//sort into each day
+
+			for (var i=0; i < items.length; i++) {
+				var targetDay = items[i].day;
+				days[targetDay].items.push(items[i]);
+			}
+
+			$scope.days = days;
+
+			//json.decode
+			//do
+			//json.encode
 		});
 	};
 	$scope.updateItem = function(data){
