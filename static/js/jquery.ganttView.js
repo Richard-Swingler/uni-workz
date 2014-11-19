@@ -147,8 +147,15 @@ behavior: {
                 }).append(data[i].name));
                 var seriesDiv = jQuery("<div>", { "class": "ganttview-vtheader-series" });
                 for (var j = 0; j < data[i].series.length; j++) {
-                    seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
-						.append(data[i].series[j].name));
+                    //checks the length of the task name
+                    if(data[i].series[j].name.length<30){
+                        seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
+                        .append(data[i].series[j].name));
+                    }else{
+                        seriesDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-series-name" })
+                        .append(data[i].series[j].name.substring(0,30)+"..."));
+                    }
+                    
                 }
                 itemDiv.append(seriesDiv);
                 headerDiv.append(itemDiv);
@@ -172,6 +179,7 @@ behavior: {
 					for (var d in dates[y][m]) {
                         //finds todays date and compares it to the date listed
                         var today = new Date();
+                    
                         if(dates[y][m][d].getDate()===today.getDate()&&dates[y][m][d].getMonth()===today.getMonth()&&dates[y][m][d].getFullYear()===today.getFullYear())
 						{
                              daysDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-day","id": "today" })
@@ -242,9 +250,19 @@ behavior: {
                     });
                     addBlockData(block, data[i], series);
                     //changes the colour
-                    block.css("background-color", "red");
-                    
-                    block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size));
+                    var compare = new Date(series.end);
+                    var today= new Date();
+                    today.setHours(0);
+                    today.setMinutes(0);
+                    today.setSeconds(0);
+                    if(today.setDate(today.getDate() + 1)>=compare){
+                       block.css("background-color", "red");
+                    }else if(today.setDate(today.getDate() + 1)>=compare){
+                       block.css("background-color", "orange");
+                    }else if(compare>today){
+                       block.css("background-color", "green");
+                    }
+                    block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(size + " days"));
                     jQuery(rows[rowIdx]).append(block);
                     rowIdx = rowIdx + 1;
                 }
