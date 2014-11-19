@@ -12,7 +12,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 	$scope.loadItems = function(){
 		$http.get('/api/v1/timetable/').then(function(response){
 			
-			var items = response.data;
+			var database = response.data;
 
 			var days = [{
 				name: 'Monday',
@@ -33,9 +33,9 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 
 			//sort into each day
 
-			for (var i=0; i < items.length; i++) {
-				var targetDay = items[i].day;
-				days[targetDay].items.push(items[i]);
+			for (var i=0; i < database.length; i++) {
+				var targetDay = database[i].day;
+				days[targetDay].items.push(database[i]);
 			}
 
 			$scope.days = days;
