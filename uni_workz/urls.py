@@ -41,9 +41,13 @@ urlpatterns = patterns('',
     url(r'^api/v1/', include(api_patterns)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
+
+# user authorisation views
     url(r'^accounts/login/$', 'uni_workz.views.login'),
     url(r'^accounts/logout/$', 'uni_workz.views.logout'),
     url(r'^accounts/loggedin/$', 'uni_workz.views.loggedin'),
     url(r'^accounts/error/$', 'uni_workz.views.invalid_login'),
     url(r'^accounts/auth/$', 'uni_workz.views.auth_view'),
+    url(r'^accounts/register/$', 'uni_workz.views.user_register'),
+    url(r'^accounts/register_success/$', 'uni_workz.views.user_register_success'),
 )
