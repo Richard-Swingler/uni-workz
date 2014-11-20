@@ -10,6 +10,8 @@ class Task(models.Model):
     startDate = models.DateTimeField('start date')
     endDate = models.DateTimeField('end date')
     assignedUser = models.ForeignKey(User, related_name = 'users_assigned', null=True)
+    progressFlag = models.SmallIntegerField(default=0)
+
 
     def __unicode__(self):
     	return self.name
