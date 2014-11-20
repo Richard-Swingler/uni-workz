@@ -5,3 +5,26 @@ body {
   padding: 40px 15px;
   text-align: center;
 }
+.box td{
+	padding: 10px 10px 10px 10px;
+
+}
+#blue{
+	background-color: blue;
+	color:white;
+}
+#orange{
+	background-color: orange;
+	color:white;
+}
+#red{
+	background-color: red;
+	color:white;
+}
+#green{
+	background-color: green;
+	color:white;
+}
+.left{
+	text-align: left;
+}

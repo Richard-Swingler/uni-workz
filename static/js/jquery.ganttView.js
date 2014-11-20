@@ -255,7 +255,9 @@ behavior: {
                     today.setHours(0);
                     today.setMinutes(0);
                     today.setSeconds(0);
-                    if(today.setDate(today.getDate() + 1)>=compare){
+                    if(series.progress===2){
+                         block.css("background-color", "blue");
+                    }else if(today.setDate(today.getDate() + 1)>=compare){
                        block.css("background-color", "red");
                     }else if(today.setDate(today.getDate() + 1)>=compare){
                        block.css("background-color", "orange");

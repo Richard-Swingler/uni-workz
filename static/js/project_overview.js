@@ -14,11 +14,12 @@ projectOverview.controller('project_overview_ctrl', function($scope, $http) {
 		});
 	};
 
-	var buildTask = function (name, startDate, endDate) {
+	var buildTask = function (name, startDate, endDate, progressFlag) {
 		return {
 			name: name,
 			start: startDate,
-			end: endDate
+			end: endDate,
+			progress: progressFlag,
 		};
 	}
 
@@ -28,7 +29,7 @@ projectOverview.controller('project_overview_ctrl', function($scope, $http) {
 			var tasks = [];
 
 			for (var i=0; i<items.length; i++) {
-				var task = buildTask(items[i].name,items[i].startDate.substring(0,10), items[i].endDate.substring(0,10));
+				var task = buildTask(items[i].name,items[i].startDate.substring(0,10), items[i].endDate.substring(0,10), items[i].progressFlag);
 				tasks.push(task);
 			}
 			
