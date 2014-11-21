@@ -31,18 +31,107 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 				items:[]
 			}];
 
-			//sort into each day
+			//sorting the JSON database by time ----------------------------------------------------------------
+			var sortByProperty = function (property){
+				return function (x,y){
+					return ((x[property] === y[property]) ? 0 : ((x[property] > y[property]) ? 1 : -1));
+    			};
+			};
+			database.sort(sortByProperty("startTime"));
+			//--------------------------------------------------------------------------------------------------
+
+			var targetTime = 800;
+
 
 			for (var i=0; i < database.length; i++) {
+				
 				var targetDay = database[i].day;
-				days[targetDay].items.push(database[i]);
-			}
+
+				//get each database item
+				var targetDayArray = database[i]; 
+				var nextTargetArray = (database[i+1] !== undefined) ? database[i+1] :  false;
+				console.log(nextTargetArray);
+
+
+
+				if (targetDayArray.startTime === targetTime){
+					days[targetDay].items.push(targetDayArray);
+					console.log("push in");
+
+					if (nextTargetArray !== false){
+							//check start time is same as targettime
+						if(nextTargetArray.starttime > targetTime){
+							targetTime = targetTime + 100;
+						}
+					}
+
+				}else{
+
+					for (var p = 800; p < 2000 ; p=p+100){
+	
+						//get the starttime of the object
+						if (targetDayArray.startTime === targetTime){
+							days[targetDay].items.push(targetDayArray);
+							console.log("push in");
+						}else{
+							var arrrayToAdd = {"id": 0, 
+										       "name": "free", 
+										       "description": "nothing", 
+										       "user": 1, 
+										       "startTime": targetTime, 
+										       "endTime": targetTime, 
+										       "day": targetDay};
+	
+							days[targetDay].items.push(arrrayToAdd);
+					
+						}
+	
+						if (nextTargetArray !== false){
+								//check start time is same as targettime
+							if(nextTargetArray.starttime > targetTime){
+								targetTime = targetTime + 100;
+							}
+						}
+						//if start time is === target time, add the item
+						//else if start time is > than target time then recursive, keep adding to target time.
+					}//end inner for					
+
+				}
+
+
+/*				while(contloop){
+
+					if(targetDayArray.startTime !== targetTime){
+						var arrrayToAdd = {"id": 0, 
+									       "name": "free", 
+									       "description": "nothing", 
+									       "user": 1, 
+									       "startTime": targetTime, 
+									       "endTime": targetTime, 
+									       "day": targetDay};
+
+						days[targetDay].items.push(arrrayToAdd);
+						
+						if(database[1].startTime === targetTime){
+							contloop = false;
+						}else{
+							targetTime += 100;
+						}
+
+					}else{
+						days[targetDay].items.push(targetDayArray);
+						if(database[1].startTime === targetTime){
+							contloop = false;
+						}else{
+							targetTime += 100;
+						}
+					}
+
+				}//end while
+*/
+			} //end for
 
 			$scope.days = days;
-
-			//json.decode
-			//do
-			//json.encode
 		});
 	};
 	$scope.updateItem = function(data){
@@ -51,3 +140,35 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 	}
 	$scope.loadItems();
 });
+
+
+
+
+/*
+
+	while(contloop){
+		if(targetDayArray.startTime !== targetTime){
+			var arrrayToAdd = {"id": 0, 
+						       "name": "free", 
+						       "description": "nothing", 
+						       "user": 1, 
+						       "startTime": targetTime, 
+						       "endTime": targetTime, 
+						       "day": targetDay};
+			days[targetDay].items.push(arrrayToAdd);
+			
+			if(database[1].startTime === targetTime){
+				contloop = false;
+			}else{
+				targetTime += 100;
+			}
+		}else{
+			days[targetDay].items.push(targetDayArray);
+			if(database[1].startTime === targetTime){
+				contloop = false;
+			}else{
+				targetTime += 100;
+			}
+		}
+	}
+*/

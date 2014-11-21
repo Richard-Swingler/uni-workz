@@ -83,29 +83,19 @@
               <td>7pm</td>
               <td>8pm</td>
             </tr>
+
             <tr ng-repeat='day in days'>
-              <td class='tbody'> day is : {$ day.name $}</td>
-              <td ng-repeat='item in day.items' class='tbody' colspan=1 style='background-color: blue; color: white;'>{$ item.name $}</td>
+              <td class='tbody'> {$ day.name $} </td>
+                  <td ng-repeat='item in day.items' class='tbody' colspan=1 style='background-color: gray; color: blue;'>{$ item.name $}</td>
             </tr>
+
 
           </table>
 
 
           <!-- changes end -->
         </div>
-        <div>
-          <ul id="sortable1" class="connectedSortable">
-              <li><a href="#" class="list-group-item" ng-init="initialize('hello mate')">{$ aaa $} </a></li>
-              <li  <a href="#" class="list-group-item" >{$ item.name $}</a></li>
-              <li><a href="#" class="list-group-item"></a></li>
-             
-              <li><a href="#" class="list-group-item">Vestibulum at eros</a></li>
-          </ul>
-        </div>
-
-      
-      
-
+  
         <!-- modal to display when click -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style= "padding-top:10%">
           <div class="modal-dialog">
