@@ -41,6 +41,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 			//--------------------------------------------------------------------------------------------------
 
 			var targetTime = 800;
+			var recursiveNo=0;
 
 
 			for (var i=0; i < database.length; i++) {
@@ -52,83 +53,65 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 				var nextTargetArray = (database[i+1] !== undefined) ? database[i+1] :  false;
 				console.log(nextTargetArray);
 
-
-
-				if (targetDayArray.startTime === targetTime){
+				//if 800 then add
+				if (targetTime === 800 && targetDayArray.startTime === 800 && days[targetDay].items.length === 0){
 					days[targetDay].items.push(targetDayArray);
-					console.log("push in");
-
-					if (nextTargetArray !== false){
-							//check start time is same as targettime
-						if(nextTargetArray.starttime > targetTime){
-							targetTime = targetTime + 100;
-						}
-					}
-
-				}else{
-
-					for (var p = 800; p < 2000 ; p=p+100){
-	
-						//get the starttime of the object
-						if (targetDayArray.startTime === targetTime){
-							days[targetDay].items.push(targetDayArray);
-							console.log("push in");
-						}else{
-							var arrrayToAdd = {"id": 0, 
-										       "name": "free", 
-										       "description": "nothing", 
-										       "user": 1, 
-										       "startTime": targetTime, 
-										       "endTime": targetTime, 
-										       "day": targetDay};
-	
-							days[targetDay].items.push(arrrayToAdd);
-					
-						}
-	
-						if (nextTargetArray !== false){
-								//check start time is same as targettime
-							if(nextTargetArray.starttime > targetTime){
-								targetTime = targetTime + 100;
-							}
-						}
-						//if start time is === target time, add the item
-						//else if start time is > than target time then recursive, keep adding to target time.
-					}//end inner for					
-
 				}
 
+				//if not 800, and is empty  add free blocks then add targetarray
+				if (targetTime > 800 && days[targetDay].items.length === 0){
 
-/*				while(contloop){
+					recursiveNo = ((targetDayArray.startTime - 800) / 100)-1;
 
-					if(targetDayArray.startTime !== targetTime){
+					for (var recurNo = 0 ; recurNo <= recursiveNo; recurNo++){
+						var plus = (recurNo===0) ? 0 : (recurNo)*100;
+
 						var arrrayToAdd = {"id": 0, 
-									       "name": "free", 
+								       "name": "free1", 
+								       "description": "nothing", 
+								       "user": 1, 
+								       "startTime": 800 + plus, 
+								       "endTime": undefined, 
+								       "day": targetDay};	
+						days[targetDay].items.push(arrrayToAdd);
+					}
+					days[targetDay].items.push(targetDayArray);
+
+				}else if (targetTime > 800 && days[targetDay].items.length !== 0){ // if not 800 and is not empty
+
+					var previousdayitem = days[targetDay].items[days[targetDay].items.length-1];
+
+					recursiveNo = ((targetDayArray.startTime - previousdayitem.startTime) / 100) - 2;
+
+					if (previousdayitem.startTime+100 === targetTime){
+						days[targetDay].items.push(targetDayArray);
+					}else{
+
+						for (var recurNo = 0 ; recurNo <= recursiveNo; recurNo++){
+
+							var plusB = (recurNo===0) ? previousdayitem.startTime + 100 : previousdayitem.startTime+100 + (recurNo*100);
+							
+							arrrayToAdd = {"id": 0, 
+									       "name": "free2", 
 									       "description": "nothing", 
 									       "user": 1, 
-									       "startTime": targetTime, 
-									       "endTime": targetTime, 
-									       "day": targetDay};
-
-						days[targetDay].items.push(arrrayToAdd);
-						
-						if(database[1].startTime === targetTime){
-							contloop = false;
-						}else{
-							targetTime += 100;
+									       "startTime": plusB, 
+									       "endTime": undefined, 
+									       "day": targetDay};	
+							days[targetDay].items.push(arrrayToAdd);
 						}
-
-					}else{
 						days[targetDay].items.push(targetDayArray);
-						if(database[1].startTime === targetTime){
-							contloop = false;
-						}else{
-							targetTime += 100;
-						}
-					}
+					}//end inner
+				}// end if 
 
-				}//end while
-*/
+				if (nextTargetArray !== false){
+					//check start time is same as targettime
+					if(nextTargetArray.startTime !== targetTime){
+						targetTime = targetTime + 100;
+						console.log(targetTime + "+100")
+					}
+				}
+
 			} //end for
 
 			$scope.days = days;
@@ -141,34 +124,3 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 	$scope.loadItems();
 });
 
-
-
-
-/*
-
-	while(contloop){
-		if(targetDayArray.startTime !== targetTime){
-			var arrrayToAdd = {"id": 0, 
-						       "name": "free", 
-						       "description": "nothing", 
-						       "user": 1, 
-						       "startTime": targetTime, 
-						       "endTime": targetTime, 
-						       "day": targetDay};
-			days[targetDay].items.push(arrrayToAdd);
-			
-			if(database[1].startTime === targetTime){
-				contloop = false;
-			}else{
-				targetTime += 100;
-			}
-		}else{
-			days[targetDay].items.push(targetDayArray);
-			if(database[1].startTime === targetTime){
-				contloop = false;
-			}else{
-				targetTime += 100;
-			}
-		}
-	}
-*/
