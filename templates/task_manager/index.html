@@ -22,6 +22,10 @@
         margin:0;
         padding:0;
       }
+      #sidebar{
+        position: relative;
+        right: -50px;
+      }
     </style>
   </head>
 
@@ -55,50 +59,67 @@
 
       <div class="starter-template text-left" >
         <h1>Task manager</h1>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="list-group">
-              <a href="#" class="list-group-item active">
-                To Do <span  data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-plus" style="float:right" id="task1" data-toggle="tooltip" data-placement="left" title="Add a Task"></span>
-              </a>
 
-              <ul id="sortable1" class="connectedSortable">
-                <li><a href="#" class="list-group-item" ng-init="initialize('hello mate')">{$ aaa $} </a></li>
-                <li  ng-repeat="item in items"><a href="#" class="list-group-item" >{$ item.name $}</a></li>
-                <li><a href="#" class="list-group-item"></a></li>
-               
-                <li><a href="#" class="list-group-item">Vestibulum at eros</a></li>
-              </ul>
+        <div ng-repeat="review in reviews">
+            <div class="col-md-3">
+              <div class="list-group">
+                <a href="#" class="list-group-item active">
+                  In Progress <span data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-plus" style="float:right" id="task" data-toggle="tooltip" data-placement="left" title="Add a Task"></span>
+                </a>
+
+                <ul id="sortable{$ review[0].progressFlag $}" class="connectedSortable">
+                  <li  ng-repeat="item in review"><a href="#" class="list-group-item" data-toggle="modal" data-target="#myModal">{$ item.name $}</a></li>
+
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                          <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                        </div>
+                        <div class="modal-body">
+                          ...
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                </ul>
+
+              </div>
             </div>
-          </div>
-          <div class="col-md-4">
-            <div class="list-group">
-              <a href="#" class="list-group-item active">
-                In Progress <span data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-plus" style="float:right" id="task2" data-toggle="tooltip" data-placement="left" title="Add a Task"></span>
-              </a>
-              <ul id="sortable2" class="connectedSortable">
-                <li><a href="#" class="list-group-item">Dapibus ac facilisis in</a></li>
-                <li><a href="#" class="list-group-item">Morbi leo risus</a></li>
-                <li><a href="#" class="list-group-item">Porta ac consectetur ac</a></li>
-                <li><a href="#" class="list-group-item">Vestibulum at eros</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="list-group">
-              <a href="#" class="list-group-item active">
-                Done! <span  data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-plus" style="float:right" id="task3" data-toggle="tooltip" data-placement="left" title="Add a Task"></span>
-              </a>
-              <ul id="sortable2" class="connectedSortable">
-                <li><a href="#" class="list-group-item">Dapibus ac facilisis in</a></li>
-                <li><a href="#" class="list-group-item">Morbi leo risus</a></li>
-                <li><a href="#" class="list-group-item">Porta ac consectetur ac</a></li>
-                <li><a href="#" class="list-group-item">Vestibulum at eros</a></li>
-              </ul>
-            </div>
-          </div>
         </div>
-      </div>
+
+        <div class="col-sm-3">
+          <div class="sidebar-module sidebar-module-inset" id="sidebar">
+            <h3 align="center">Activity Stream</h3>
+            {% for log in logs %}
+              <div class="list-group">
+                <a class="list-group-item" href="#">
+                    <h4 class="list-group-item-heading">
+                        {% if not log.user.first_name and not log.user.last_name %} 
+                            {{ log.user }} 
+                        {% endif %} 
+
+                        {% if log.user.first_name and log.user.last_name %} 
+                            {{ log.user.first_name }} 
+                            {{ log.user.last_name }} 
+                        {% endif %} at {{ log.timestamp }}</h4>
+                    <p class="list-group-item-text">{{ log.action }}</p>
+                    <p class="list-group-item-text">Post: {{ log.extra }}</p>
+                </a>
+              </div>
+            {% endfor %}
+          </div><!-- /.blog-sidebar -->
+        </div>
+        <pre>{$ reviews $}</pre>
       
 
       <!-- Modal -->
@@ -113,7 +134,7 @@
               <form class="form-horizontal" role="form">
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-2 control-label">Task Name:</label>
-                  <div class="col-sm-10">
+                  <div class="col-sm-10">q
                     <input type="email" class="form-control" id="inputEmail3" placeholder="e.g. Design Stage">
                   </div>
                 </div>
@@ -147,35 +168,37 @@
         </div>
       </div>
 
+                
 
-<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-          <div class="sidebar-module sidebar-module-inset">
-            <h3 align="center">Activity Stream</h3>
-        {% for log in logs %}
-        <div class="list-group">
-        <a class="list-group-item" href="#">
-            <h4 class="list-group-item-heading">{% if not log.user.first_name and not log.user.last_name %} {{ log.user }} {% endif %} {% if log.user.first_name and log.user.last_name %} {{ log.user.first_name }} {{ log.user.last_name }} {% endif %} at {{ log.timestamp }}</h4>
-            <p class="list-group-item-text">{{ log.action }}</p>
-            <p class="list-group-item-text">Post: {{ log.extra }}</p>
-        </a>
-        </div>
-        {% endfor %}
-        </div><!-- /.blog-sidebar --></div>
+
+      <script>
+          $(function() {
+            $( "#sortable1, #sortable2, #sortable0" ).sortable({
+              connectWith: ".connectedSortable",
+            }).disableSelection();
+          });
+          $('#task1, #task2, #task3').tooltip();
+      </script>
 
     </div>
+<!-- Large modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>
 
-  <script>
-      $(function() {
-        $( "#sortable1, #sortable2, #sortable3" ).sortable({
-          connectWith: ".connectedSortable",
-          stop: function(event, position){
-            updateItem('data');
-          }
-        }).disableSelection();
-      });
-      
-      $('#task1, #task2, #task3').tooltip();
-      
-    </script>
-  </body>
-</html>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>
+
+<!-- Small modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-sm">Small modal</button>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      ...
+    </div>
+  </div>
+</div>
