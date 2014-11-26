@@ -69,24 +69,23 @@
 
             <tr>
               <td>#</td>
-              <td>8am</td>
-              <td>9am</td>
-              <td>10am</td>
-              <td>11am</td>
-              <td>12pm</td>
-              <td>1pm</td>
-              <td>2pm</td>
-              <td>3pm</td>
-              <td>4pm</td>
-              <td>5pm</td>
-              <td>6pm</td>
-              <td>7pm</td>
-              <td>8pm</td>
+              <td>8am-9am</td>
+              <td>9am-10am</td>
+              <td>10am-11am</td>
+              <td>11am-12pm</td>
+              <td>12pm-1pm</td>
+              <td>1pm-2pm</td>
+              <td>2pm-3pm</td>
+              <td>3pm-4pm</td>
+              <td>4pm-5pm</td>
+              <td>5pm-6pm</td>
+              <td>6pm-7pm</td>
+              <td>7pm-8pm</td>
             </tr>
 
             <tr ng-repeat='day in days'>
               <td class='tbody'> {$ day.name $} </td>
-                  <td ng-repeat='item in day.items' class='tbody' colspan=1 style='background-color: gray; color: white;'>{$ item.name $} and {$ item.startTime $}</td>
+                  <td ng-repeat='item in day.items' class='tbody' colspan= '{$ item.hours $}' style='background-color: gray; color: white;'>{$ item.name $} and {$ item.startTime $} to {$ item.endTime $}</td>
             </tr>
 
 

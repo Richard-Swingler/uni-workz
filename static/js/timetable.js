@@ -51,10 +51,16 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 				//get each database item
 				var targetDayArray = database[i]; 
 				var nextTargetArray = (database[i+1] !== undefined) ? database[i+1] :  false;
-				console.log(nextTargetArray);
 
 				//if 800 then add
 				if (targetTime === 800 && targetDayArray.startTime === 800 && days[targetDay].items.length === 0){
+
+					//number of hours
+					var hours = targetDayArray.endTime - targetDayArray.startTime;
+					targetDayArray["hours"] = hours /100;
+
+					console.log(targetDayArray);
+
 					days[targetDay].items.push(targetDayArray);
 				}
 
@@ -63,43 +69,47 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 
 					recursiveNo = ((targetDayArray.startTime - 800) / 100)-1;
 
-					for (var recurNo = 0 ; recurNo <= recursiveNo; recurNo++){
-						var plus = (recurNo===0) ? 0 : (recurNo)*100;
+					var endingtime = targetDayArray.startTime - (100 * recursiveNo);
 
+					hours = (endingtime - 800)/100;
+
+						//push a new array for the unoccipied time.
 						var arrrayToAdd = {"id": 0, 
-								       "name": "free1", 
+								       "name": "1 ------", 
 								       "description": "nothing", 
 								       "user": 1, 
-								       "startTime": 800 + plus, 
-								       "endTime": undefined, 
-								       "day": targetDay};	
+								       "startTime": 800, 
+								       "endTime": endingtime, 
+								       "day": targetDay,
+								   	   "hours" : hours};	
 						days[targetDay].items.push(arrrayToAdd);
-					}
+					
+					targetDayArray.hours = (targetDayArray.endTime - targetDayArray.startTime)/100;
 					days[targetDay].items.push(targetDayArray);
 
 				}else if (targetTime > 800 && days[targetDay].items.length !== 0){ // if not 800 and is not empty
 
 					var previousdayitem = days[targetDay].items[days[targetDay].items.length-1];
+					recursiveNo = ((targetDayArray.startTime - previousdayitem.endTime) / 100)-1;
+					hours = (targetDayArray.startTime - previousdayitem.endTime)/100;
 
-					recursiveNo = ((targetDayArray.startTime - previousdayitem.startTime) / 100) - 2;
-
-					if (previousdayitem.startTime+100 === targetTime){
+					if (previousdayitem.endTime === targetTime){
 						days[targetDay].items.push(targetDayArray);
+						targetDayArray.hours = (targetDayArray.endTime - targetDayArray.startTime)/100;
 					}else{
-
-						for (var recurNo = 0 ; recurNo <= recursiveNo; recurNo++){
-
-							var plusB = (recurNo===0) ? previousdayitem.startTime + 100 : previousdayitem.startTime+100 + (recurNo*100);
 							
 							arrrayToAdd = {"id": 0, 
-									       "name": "free2", 
+									       "name": "2 ------", 
 									       "description": "nothing", 
 									       "user": 1, 
-									       "startTime": plusB, 
-									       "endTime": undefined, 
-									       "day": targetDay};	
+									       "startTime": previousdayitem.endTime, 
+									       "endTime": previousdayitem.endTime + ((hours) * 100), 
+									       "day": targetDay,
+									   	   "hours" : hours};
+
 							days[targetDay].items.push(arrrayToAdd);
-						}
+						
+						targetDayArray.hours = (targetDayArray.endTime - targetDayArray.startTime)/100;
 						days[targetDay].items.push(targetDayArray);
 					}//end inner
 				}// end if 
