@@ -67,9 +67,9 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 				//if not 800, and is empty  add free blocks then add targetarray
 				if (targetTime > 800 && days[targetDay].items.length === 0){
 
-					recursiveNo = ((targetDayArray.startTime - 800) / 100)-1;
+					//recursiveNo = ((targetDayArray.startTime - 800) / 100)-1;
 
-					var endingtime = targetDayArray.startTime - (100 * recursiveNo);
+					var endingtime = targetDayArray.startTime;
 
 					hours = (endingtime - 800)/100;
 
@@ -94,8 +94,8 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http) {
 					hours = (targetDayArray.startTime - previousdayitem.endTime)/100;
 
 					if (previousdayitem.endTime === targetTime){
-						days[targetDay].items.push(targetDayArray);
 						targetDayArray.hours = (targetDayArray.endTime - targetDayArray.startTime)/100;
+						days[targetDay].items.push(targetDayArray);		
 					}else{
 							
 							arrrayToAdd = {"id": 0, 
