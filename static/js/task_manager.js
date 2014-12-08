@@ -1,14 +1,38 @@
-var taskManager = angular.module('task_manager', []).config(function($httpProvider, $interpolateProvider) {
+var $jq = jQuery.noConflict();
+var taskManager = angular.module('task_manager', ['ui.bootstrap', 'ui.sortable', 'ngCookies']).config(function($httpProvider, $interpolateProvider) {
    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; 
    $interpolateProvider.startSymbol('{$');
    $interpolateProvider.endSymbol('$}');
 });
 
 
-taskManager.controller('task_manager_ctrl', function($scope, $http) {
+taskManager.controller('task_manager_ctrl', function($scope, $http, $cookies) {
 	$scope.initialize = function(data){
 		$scope.aaa = data;		
 	};
+	$scope.updateItem = function(){
+		$http({
+			method: 'POST',
+			url: '/api/v1/tasks/', 
+			headers: {
+				'X-CSRFToken': $cookies.csrftoken
+			},
+			data: {
+		        "name": "to do 1", 
+		        "description": "asdfsafd12", 
+		        "author": 1, 
+		        "startDate": "2014-12-07T16:23:02Z", 
+		        "endDate": "2014-12-07T16:23:04Z", 
+		        "progressFlag": 0
+		    }
+		}).
+		success(function(data, status, headers, config) {
+		    console.log('yay');
+		}).
+		error(function(data, status, headers, config) {
+		    console.log($cookies.csrftoken);
+		});
+	}
 	$scope.loadItems = function(){
 		$http.get('/api/v1/tasks/').then(function(response){
 			$scope.items = response.data;
@@ -31,14 +55,40 @@ taskManager.controller('task_manager_ctrl', function($scope, $http) {
 
 			$scope.reviews = reviews;
 		});
+	}; 
+
+	$scope.sortableOptions = {
+	    placeholder: "app",
+	    connectWith: ".apps-container"
 	};
-	// $scope.updateItem = function(data){
-	// 	aler('>>');
-	// 	$http.put('/api/update/').then(function(){
-	// 		alert('might have done something');
-	// 		alert('maybe');
-	// 		alert('possibly');
-	// 	});
-	// }
+	
 	$scope.loadItems();
+	$scope.updateItem();
 });
+
+
+angular.module('modalviews',  ['ui.bootstrap']);
+// add manager Modal
+var addManagerModal = function($scope, $modal) {
+	$scope.open = function ($task) {
+		$scope.task = $task;
+		var modalInstance = $modal.open({
+	    templateUrl: 'addManager',
+	    	scope: $scope,
+	      	controller: ModalInstanceCtrl});
+};
+	
+
+
+};
+
+var ModalInstanceCtrl = function ($scope, $modalInstance) {
+
+  $scope.ok = function () {
+    $modalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
