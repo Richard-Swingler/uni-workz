@@ -10,29 +10,29 @@ taskManager.controller('task_manager_ctrl', function($scope, $http, $cookies) {
 	$scope.initialize = function(data){
 		$scope.aaa = data;		
 	};
-	$scope.updateItem = function(){
-		$http({
-			method: 'POST',
-			url: '/api/v1/tasks/', 
-			headers: {
-				'X-CSRFToken': $cookies.csrftoken
-			},
-			data: {
-		        "name": "to do 1", 
-		        "description": "asdfsafd12", 
-		        "author": 1, 
-		        "startDate": "2014-12-07T16:23:02Z", 
-		        "endDate": "2014-12-07T16:23:04Z", 
-		        "progressFlag": 0
-		    }
-		}).
-		success(function(data, status, headers, config) {
-		    console.log('yay');
-		}).
-		error(function(data, status, headers, config) {
-		    console.log($cookies.csrftoken);
-		});
-	}
+	// $scope.updateItem = function(){
+	// 	$http({
+	// 		method: 'POST',
+	// 		url: '/api/v1/tasks/', 
+	// 		headers: {
+	// 			'X-CSRFToken': $cookies.csrftoken
+	// 		},
+	// 		data: {
+	// 	        "name": "to do 1", 
+	// 	        "description": "asdfsafd12", 
+	// 	        "author": 1, 
+	// 	        "startDate": "2014-12-07T16:23:02Z", 
+	// 	        "endDate": "2014-12-07T16:23:04Z", 
+	// 	        "progressFlag": 0
+	// 	    }
+	// 	}).
+	// 	success(function(data, status, headers, config) {
+	// 	    console.log('yay');
+	// 	}).
+	// 	error(function(data, status, headers, config) {
+	// 	    console.log($cookies.csrftoken);
+	// 	});
+	// };
 	$scope.loadItems = function(){
 		$http.get('/api/v1/tasks/').then(function(response){
 			$scope.items = response.data;
@@ -58,12 +58,28 @@ taskManager.controller('task_manager_ctrl', function($scope, $http, $cookies) {
 	}; 
 
 	$scope.sortableOptions = {
-	    placeholder: "app",
-	    connectWith: ".apps-container"
+
+		start: function(event, ui) {
+                item = ui.item;
+                console.log(item.attr('id'));
+                newList = oldList = ui.item.parent().parent();
+                console.log(oldList.attr('id'));
+            },
+            stop: function(event, ui) {          
+                alert("Moved " + item.attr('id') + " from " + oldList.attr('id') + " to " + newList.attr('id') + " to " + ui.item.index());
+            },
+            change: function(event, ui) {  
+                if(ui.sender) newList = ui.placeholder.parent().parent();
+            },
+            receive: function(event, ui) {
+		        var sourceList = ui.sender;
+		        var targetList = $jq(this);
+		    },
+	    connectWith: ".apps-container",
 	};
 	
 	$scope.loadItems();
-	$scope.updateItem();
+	//$scope.updateItem();
 });
 
 

@@ -71,8 +71,8 @@
                         In Progress <span  class="glyphicon glyphicon-plus" style="float:right" id="task" data-toggle="tooltip" data-placement="left" title="Add a Task"></span>
                     </a>
                     <div ng-controller="addManagerModal">
-                        <ul ui-sortable="sortableOptions" class="connectedSortable apps-container">
-                                <li ng-repeat="item in review">
+                        <ul id="sortable{$ review[0].progressFlag $}" ui-sortable="sortableOptions" ng-model="review" class="connectedSortable apps-container">
+                                <li id="item{$ item.id $}" ng-repeat="item in review">
                                     <a href="#" class="list-group-item" ng-click="open(item)">
                                         <b>{$ item.name $}</b>
                                     </a>
