@@ -106,7 +106,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 					//add the event
 					$http({
 						 method: 'POST',
-						 url: 'api/v1/timetable/', 
+						 url: 'http://localhost:8000/api/v1/timetable/', 
 						 headers: {
 						 	'X-CSRFToken': $cookies.csrftoken
 						 },
