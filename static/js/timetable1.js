@@ -1,4 +1,4 @@
-var collaboratortool = angular.module('timetable', []).config(function($httpProvider, $interpolateProvider) {
+var collaboratortool = angular.module('timetable1', []).config(function($httpProvider, $interpolateProvider) {
    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; 
    $interpolateProvider.startSymbol('{$');
    $interpolateProvider.endSymbol('$}');
