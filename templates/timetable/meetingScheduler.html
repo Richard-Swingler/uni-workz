@@ -51,11 +51,37 @@
       </div>
     </div>
 
+
     <div class="container">
+        <!-- Full Calendar placeholder -->
         <div id='calendar'></div>
     </div>
-  
-       
+
+    <!-- bootstrap modal -->
+
+
+
+<div ng-controller="addEventModal">
+    <script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Im a modal!</h3>
+        </div>
+        <div class="modal-body">
+            <p> Finally something </p>
+            
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+    <button id='aaron' class="btn btn-default" ng-click="open()">Open me!</button>
+</div>
+
+
+
+    <!-- end here -->
 
     </div>
   </body>

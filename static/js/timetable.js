@@ -1,10 +1,37 @@
 var $jq = jQuery.noConflict();
-var collaboratortool = angular.module('timetable', ['ngCookies']).config(function($httpProvider, $interpolateProvider) {
+var collaboratortool = angular.module('timetable', ['ngCookies','ui.bootstrap']).config(function($httpProvider, $interpolateProvider) {
    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; 
    $interpolateProvider.startSymbol('{$');
    $interpolateProvider.endSymbol('$}');
 });
 
+
+// angular bootstrap modal----------------------------
+
+var addEventModal = function($scope, $modal) {
+
+  $scope.open = function () {
+
+    var modalInstance = $modal.open({
+      templateUrl: 'myModalContent.html',
+      controller: 'ModalInstanceCtrl'
+      
+    });
+  };
+};
+
+var ModalInstanceCtrl = function ($scope, $modalInstance) {
+
+  $scope.ok = function () {
+    $modalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
+
+// end of angular bootstrap modal -------------------
 
 collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) {
 	$scope.doesExistInDatabase = function(days){
@@ -36,6 +63,9 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 	// }
 			
 	$scope.loadItems = function(){
+		//hide the modal button
+		$jq('#aaron').hide();
+
 		$http.get('/api/v1/timetable/').then(function(response){
 			var items = response.data;
 			var eventList= [];
@@ -83,7 +113,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 
 				//allow user to add an event
 				select: function(start, end, allDay) {
-
+/*					
 					// prompt the user to input the following information
 					var title1 = prompt('Title');
 					var description1 = prompt('Description');
@@ -96,7 +126,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 								"description": description1, 
 				 				"start": start, 
 				 				"end": end, 
-				 				"allDay": allDay, 
+				 				"allDay": false, 
 				 				"user": '1' // should replace with actual user id
 							},
 							true // make the event "stick"
@@ -106,7 +136,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 					//add the event
 					$http({
 						 method: 'POST',
-						 url: 'http://localhost:8000/api/v1/timetable/', 
+						 url: '/api/v1/timetable/', 
 						 headers: {
 						 	'X-CSRFToken': $cookies.csrftoken
 						 },
@@ -115,25 +145,36 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 					        "description": description1, 
 					        "start": start, 
 					        "end": end, 
-					        "allDay": allDay, 
+					        "allDay": false, 
 					        "user": '1'
 						}
 					}). success(function(data, status, headers, config) {
-					    	console.log('yay');
+					    	console.log('success');
+					    	
 					}). error(function(data, status, headers, config) {
 							console.log('fail');
-					    	console.log($cookies.csrftoken);
+					    	//console.log($cookies.csrftoken); 	
 					});
 
 					//unselect the event
 					$jq('#calendar').fullCalendar('unselect');
+*/					
+					//start
+						
+						$jq('#aaron').show();
+						$jq('#aaron').click();
+						$jq('#aaron').hide();
 
+					//end
 				}
+
+				//remove an event
 
 
 			});
 
 		});
+
 	};
 	// $scope.updateItem = function(data){
 	// 	$http.put('/api/update/').then(function($scope.days){
@@ -149,4 +190,8 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 	/
 	/**********************************************************************************************************************************************************************************************/
 });
+
+
+
+
 
