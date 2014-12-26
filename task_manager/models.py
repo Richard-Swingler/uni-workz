@@ -16,6 +16,7 @@ class Task(models.Model):
     def __unicode__(self):
     	return self.name
 
+# Override of save method - when a Task is added or changed in anyway there will be a 'log' created
     def save(self, *args, **kwargs):
         if not self.id:
             # Change self.author to the name of the users currently logged in
@@ -27,3 +28,9 @@ class Task(models.Model):
 
         super(Task, self).save(*args, **kwargs)
 
+# Override of delete method - log created before a task is deleted
+    def delete(self):
+        log(user=self.author, action='Deleted a Task',
+            extra={"title": self.name})
+
+        super(Task, self).delete()
