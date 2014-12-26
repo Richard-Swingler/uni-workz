@@ -7,7 +7,7 @@
     <title>Student collaborator</title>
     
     <link href="../../static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../static/css/styles.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="../../static/css/jquery-ui.css" />
     <script src="../../static/js/jquery-1.11.1.min.js"></script>
     <script src="../../static/js/jquery-ui.js"></script>
@@ -17,45 +17,34 @@
     <script src="../../static/js/task_manager.js"></script>
     <script src="../../static/js/ui-bootstrap-tpls-0.12.0.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-cookies.js"></script>
-
-    <style>
-      ul.connectedSortable {
-        list-style-type: none;
-        list-style-position:inside;
-        margin:0;
-        padding:0;
-      }
-      #sidebar{
-        position: relative;
-        right: -50px;
-      }
-    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular-route.js"></script>
+    <link href="../../static/css/styles.css" rel="stylesheet">
   </head>
 
   <body  ng-controller="task_manager_ctrl">
 
     <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Student collaborator</a>
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Student collaborator</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    <li><a href="/timetable">Meeting scheduler</a></li>
+                    <li><a href="/projectOverview">Project overview</a></li>
+                    <li><a href="/admin">Admin</a></li>
+                    <li><a href="/accounts/login">Login</a></li>
+                    <li><a href="/accounts/register">Register</a></li>
+                </ul>
+            </div>
         </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="/timetable">Meeting scheduler</a></li>
-            <li><a href="/projectOverview">Project overview</a></li>
-            <li><a href="/admin">Admin</a></li>
-            <li><a href="/accounts/login">Login</a></li>
-            <li><a href="/accounts/register">Register</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
     </div>
 
     <div class="container">
@@ -65,66 +54,213 @@
 
         <div ng-repeat="review in reviews">
             <div class="col-md-3">
-                <div class="list-group">
+                <div class="list-group"  ng-controller="addManagerModal">
 
                     <a href="#" class="list-group-item active">
-                        In Progress <span  class="glyphicon glyphicon-plus" style="float:right" id="task" data-toggle="tooltip" data-placement="left" title="Add a Task"></span>
+                        <span ng-if="review[0].progressFlag == 0">To Do</span>
+                        <span ng-if="review[0].progressFlag == 1">In Progress</span>
+                        <span ng-if="review[0].progressFlag == 2">Done</span>
+                        <span  class="glyphicon glyphicon-plus" style="float:right" id="task" tooltip-placement="top" tooltip="Add a Task!" ng-click="add(review[0].progressFlag)"></span>
                     </a>
-                    <div ng-controller="addManagerModal">
-                        <ul id="sortable{$ review[0].progressFlag $}" ui-sortable="sortableOptions" ng-model="review" class="connectedSortable apps-container">
-                                <li id="item{$ item.id $}" ng-repeat="item in review">
-                                    <a href="#" class="list-group-item" ng-click="open(item)">
-                                        <b>{$ item.name $}</b>
-                                    </a>
+                    
+                    <script type="text/ng-template" id="add_task">
+                        <div class="modal-header text-center">
+                            <h3>Add a task to - <b><span ng-if="flag == 0">To Do</span>
+                                                    <span ng-if="flag == 1">In Progress</span>
+                                                    <span ng-if="flag == 2">Done</span></b></h3>
+                        </div>
+                        <div class="modal-body">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <label for="name" class="col-sm-3 control-label">Name:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" ng-model="add_name" class="form-control" id="name" placeholder="e.g. Finish drawings">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="description" class="col-sm-3 control-label">Description:</label>
+                                    <div class="col-sm-9">
+                                        <textarea id="description" ng-model="add_description" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="assigned_user" class="col-sm-3 control-label">Assigned User:</label>
+                                    <div class="col-sm-9">
+                                        <select id="assigned_user" ng-model="assigned_user" class="form-control">
 
-                                    <script type="text/ng-template" id="addManager">
-                                        <div class="modal-header">
-                                            <p><b>{$ task.name $}</b></p>
+                                                {% for user in users %}
+                                                    <option value="{{user.id}}">{{user}}</option>
+                                                {% endfor %}
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" value="{{ user_id }}" name="add_author" id="add_author" ng-model="add_author" ng-value="add_author">
+
+                                <div ng-controller="DatepickerDemoCtrl">
+                                    <div class="form-group">
+                                        <label for="start_date" class="col-sm-3 control-label">Start Date:</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                                         </div>
-                                        <div class="modal-body">
-                                            <p>ID: {$ task.id $}</p>
-                                            <p>Start Date: {$ task.startDate $}</p>
-                                            <p>End Date: {$ task.endDate $}</p>
-                                            <p>Progress Flag: {$ task.progressFlag $}</p>
-                                            <p>Description: {$ task.description $}</p>
-                                            <p>Author: {$ task.author $}</p>
+                                        <div class="col-sm-1">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="todate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-primary" ng-click="ok()">OK</button>
-                                            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-sm btn-primary" ng-click="today()">Today</button>
+                                            <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
                                         </div>
-                                    </script>
-                                </li>
-                            
-                        </ul>
-                    </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="end_date" class="col-sm-3 control-label">End Date:</label>
+                                        <div class="col-sm-5">
+                                            <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt1" is-open="opened1" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default" ng-click="todate1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                            </span>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <button type="button" class="btn btn-sm btn-primary" ng-click="today1()">Today</button>
+                                            <button type="button" class="btn btn-sm btn-danger" ng-click="clear1()">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" ng-click="addATask(flag, {{ user_id }}); ok()">OK</button>
+                            <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+                        </div>
+                    </script>
+
+                    <ul id="sortable{$ review[0].progressFlag $}" ui-sortable="sortableOptions" ng-model="review" class="connectedSortable apps-container">
+                        <li id="item{$ item.id $}" ng-repeat="item in review">
+                            <a href="#" class="list-group-item" ng-click="open(item)">
+                                <p><b>{$ item.name | capitalize $}</b></p>
+                                <p>{$ item.description | limitTo: 30 $}...</p>
+                                <p><u>{$ item.startDate | limitTo: 10 $}</u> --- <u>{$ item.endDate | limitTo: 10 $}</u> <span class="glyphicon glyphicon-remove btn btn-sm btn-danger"  ng-click="deleteTask(item.id); ok()"></span></p>
+                            </a>
+
+
+                            <script type="text/ng-template" id="addManager">
+                                <div class="modal-header text-center">
+                                    <h3><b><span class="firstLetter">{$ task.name $}</span> (ID: {$ task.id $})</b></h3>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal">
+                                        <div class="form-group">
+                                            <label for="name" class="col-sm-3 control-label">Name:</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" ng-model="task_name" class="form-control" id="name" value="{$ task.task_name $}">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description" class="col-sm-3 control-label" >Description:</label>
+                                            <div class="col-sm-9">
+                                                <textarea id="description" class="form-control" ng-model="description" rows="5" value="{$ task.description $}"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description" class="col-sm-3 control-label" >Author:</label>
+                                            <div class="col-sm-9">
+                                                {% for user in users %}
+                                                    <p class="firstLetter" ng-if="task.author == {{user.id}}" >{{user}}</p>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="assigned_user" class="col-sm-3 control-label">Assigned User:</label>
+                                            <div class="col-sm-9">
+                                                <select id="assigned_user" name="assigned_user" class="form-control">
+
+                                                        {% for user in users %}
+                                                            <option value="{{user.id}}" ng-if="task.assignedUser == {{user.id}}" selected>{{user}}</option>
+                                                            <option value="{{user.id}}" ng-if="task.assignedUser !== {{user.id}}" >{{user}}</option>
+                                                        {% endfor %}
+
+                                                </select>
+                                            </div>
+                                        </div>
+
+
+                                        <div ng-controller="DatepickerDemoCtrl">
+                                            <div class="form-group">
+                                                <label for="start_date" class="col-sm-3 control-label">Start Date:</label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" class="form-control" ng-model="startDate" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="todate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button type="button" class="btn btn-sm btn-primary" ng-click="today()">Today</button>
+                                                    <button type="button" class="btn btn-sm btn-danger" ng-click="clear()">Clear</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="end_date" class="col-sm-3 control-label">End Date:</label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" class="form-control" ng-model="endDate" datepicker-popup="{{format}}" ng-model="dt1" is-open="opened1" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                                                </div>
+                                                <div class="col-sm-1">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="todate1($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button type="button" class="btn btn-sm btn-primary" ng-click="today1()">Today</button>
+                                                    <button type="button" class="btn btn-sm btn-danger" ng-click="clear1()">Clear</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-success" ng-click="updateATask(flag, {{ user_id }}, task.id); ok()"><span class="glyphicon glyphicon-floppy-disk"></span> Update</button>
+                                    <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+                                    <button class="btn btn-danger" ng-click="deleteTask(task.id); ok()"><span class="glyphicon glyphicon-trash"></span></button>
+                                </div>
+                            </script>
+
+
+
+                        </li>
+                    </ul>
+
                 </div>
             </div>
         </div>
 
 
-
         <div class="col-sm-3">
-          <div class="sidebar-module sidebar-module-inset" id="sidebar">
-            <h3 align="center">Activity Stream</h3>
-            {% for log in logs %}
-              <div class="list-group">
-                <a class="list-group-item" href="#">
-                    <h4 class="list-group-item-heading">
-                        {% if not log.user.first_name and not log.user.last_name %} 
-                            {{ log.user }} 
-                        {% endif %} 
+            <div class="sidebar-module sidebar-module-inset" id="sidebar">
+                <h3 align="center">Events Log</h3>
+                {% for log in logs %}
+                    <div class="list-group">
+                        <a class="list-group-item logItem" href="#">
+                            User <b class="list-group-item-heading"><span class="firstLetter">
+                                {% if not log.user.first_name and not log.user.last_name %} 
+                                    {{ log.user }} 
+                                {% endif %} 
 
-                        {% if log.user.first_name and log.user.last_name %} 
-                            {{ log.user.first_name }} 
-                            {{ log.user.last_name }} 
-                        {% endif %} at {{ log.timestamp }}</h4>
-                    <p class="list-group-item-text">{{ log.action }}</p>
-                    <p class="list-group-item-text">Post: {{ log.extra }}</p>
-                </a>
-              </div>
-            {% endfor %}
-          </div>
+                                {% if log.user.first_name and log.user.last_name %} 
+                                    {{ log.user.first_name }} 
+                                    {{ log.user.last_name }} 
+                                {% endif %}</span></b> on <u>{{ log.timestamp }}</u>
+                            <p class="list-group-item-text">{{ log.action }} named "<i>{{ log.extra.title }}</i>"</p>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
 
     </div>

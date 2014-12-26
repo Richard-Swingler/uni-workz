@@ -7,7 +7,15 @@ from task_manager.serializers import TaskSerializer, UserSerializer, GroupSerial
 
 def index(request):
     logs = Log.objects.all() [:5]
-    return render(request, 'task_manager/index.html', {'logs': logs})
+
+    if request.user.is_authenticated():
+        user_id = request.user.id
+    else:
+        user_id = null
+
+    users = User.objects.all()
+
+    return render(request, 'task_manager/index.html', {'logs': logs, 'user_id': user_id, 'users': users})
 
 class TaskViewSet(viewsets.ModelViewSet):
     """

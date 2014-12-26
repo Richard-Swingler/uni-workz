@@ -28,3 +28,24 @@ body {
 .left{
 	text-align: left;
 }
+ul.connectedSortable {
+    list-style-type: none;
+    list-style-position:inside;
+    margin:0;
+    padding:0;
+}
+#sidebar{
+    position: relative;
+    right: -50px;
+    top: -57px;
+}
+.list-group-item{
+	padding: 5px 5px;
+}
+.logItem{
+	background-color: #F5F5DC;
+	width: 270px;
+}
+.firstLetter{
+	text-transform: capitalize;
+}
