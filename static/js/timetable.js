@@ -1,10 +1,9 @@
 var $jq = jQuery.noConflict();
-var collaboratortool = angular.module('timetable', ['ngCookies','ui.bootstrap']).config(function($httpProvider, $interpolateProvider) {
+var collaboratortool = angular.module('timetable', ['ngCookies','ui.bootstrap','ngRoute']).config(function($httpProvider, $interpolateProvider) {
    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; 
    $interpolateProvider.startSymbol('{$');
    $interpolateProvider.endSymbol('$}');
 });
-
 
 // angular bootstrap modal----------------------------
 
@@ -33,9 +32,14 @@ var ModalInstanceCtrl = function ($scope, $modalInstance) {
 
 // end of angular bootstrap modal -------------------
 
-collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) {
-	$scope.doesExistInDatabase = function(days){
-		
+collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$route, $routeParams, $location) {
+
+	//route
+	$scope.$route = $route;
+    $scope.$location = $location;
+    $scope.$routeParams = $routeParams;
+
+	$scope.doesExistInDatabase = function(days){		
 		//for(var i=0; i < days.length; i++){
 		//	if (day[i].id <0){
 		//		displaycross.push = "<button type='submit' class='btn btn-default'> <span class='glyphicon glyphicon-remove'></span> </button>";
@@ -63,8 +67,8 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 	// }
 			
 	$scope.loadItems = function(){
-		//hide the modal button
-		$jq('#aaron').hide();
+		//hide the modal button --- can remove
+		$jq('#openmodal').hide();
 
 		$http.get('/api/v1/timetable/').then(function(response){
 			var items = response.data;
@@ -113,12 +117,12 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 
 				//allow user to add an event
 				select: function(start, end, allDay) {
-/*					
+				
 					// prompt the user to input the following information
 					var title1 = prompt('Title');
 					var description1 = prompt('Description');
 
-					if(title1){
+					if(title1 && description1){
 
 						$jq('#calendar').fullCalendar('renderEvent',
 							{
@@ -150,7 +154,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 						}
 					}). success(function(data, status, headers, config) {
 					    	console.log('success');
-					    	
+					    					    	
 					}). error(function(data, status, headers, config) {
 							console.log('fail');
 					    	//console.log($cookies.csrftoken); 	
@@ -158,18 +162,63 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies) 
 
 					//unselect the event
 					$jq('#calendar').fullCalendar('unselect');
-*/					
-					//start
-						
-						$jq('#aaron').show();
-						$jq('#aaron').click();
-						$jq('#aaron').hide();
+					
+					/* start
+						$jq('#eventName').value="zzz";
 
-					//end
-				}
+						$rootScope.here = "asdasdasd";
+
+						$jq('#openmodal').show();
+						$jq('#openmodal').click();
+						$jq('#openmodal').hide();
+
+					end */
+				},
 
 				//remove an event
 
+				eventClick: function(calEvent, jsEvent, view) {
+
+					var eventID = calEvent.id;
+					//alert(eventID);
+
+					//start
+					$jq( "#dialog" ).dialog({
+		                  resizable: false,
+		                  height:150,
+		                  width:500,
+		                  modal: true,
+		                  title: 'Do you want to delete this event?',
+		                  buttons: {
+		                             CLOSE: function() {
+		                                 $jq("#dialog").dialog( "close" );
+		                             },
+		                             "DELETE": function() {
+		                                //delete the event from the database
+		                          		
+		                          		 $http({
+										   method: 'DELETE',
+										   url: '/api/v1/timetable/' + eventID, 
+										   headers: {
+										    'X-CSRFToken': $cookies.csrftoken
+										   }
+										  }).
+										  success(function(data, status, headers, config) {
+										      console.log('Task was successfully deleted from the Database');
+										  }).
+										  error(function(data, status, headers, config) {
+										      console.log($cookies.csrftoken);
+										  });
+
+		                          		//end
+
+		                             }
+		                           }
+		             });
+
+					//end
+
+				}
 
 			});
 
