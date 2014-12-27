@@ -34,11 +34,6 @@ var ModalInstanceCtrl = function ($scope, $modalInstance) {
 
 collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$route, $routeParams, $location) {
 
-	//route
-	$scope.$route = $route;
-    $scope.$location = $location;
-    $scope.$routeParams = $routeParams;
-
 	$scope.doesExistInDatabase = function(days){		
 		//for(var i=0; i < days.length; i++){
 		//	if (day[i].id <0){
@@ -121,9 +116,10 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 					// prompt the user to input the following information
 					var title1 = prompt('Title');
 					var description1 = prompt('Description');
-
+					/*
 					if(title1 && description1){
 
+					
 						$jq('#calendar').fullCalendar('renderEvent',
 							{
 								"title": title1,
@@ -136,6 +132,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 							true // make the event "stick"
 						);
 					}
+					*/
 
 					//add the event
 					$http({
@@ -154,7 +151,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 						}
 					}). success(function(data, status, headers, config) {
 					    	console.log('success');
-					    					    	
+							    $location.path("/timetable");							
 					}). error(function(data, status, headers, config) {
 							console.log('fail');
 					    	//console.log($cookies.csrftoken); 	
@@ -179,8 +176,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 
 				eventClick: function(calEvent, jsEvent, view) {
 
-					var eventID = calEvent.id;
-					//alert(eventID);
+					var eventID = calEvent.id; //get the id of the event clicked
 
 					//start
 					$jq( "#dialog" ).dialog({
@@ -212,6 +208,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 
 		                          		//end
 
+		                          		$jq("#dialog").dialog( "close" );
 		                             }
 		                           }
 		             });
