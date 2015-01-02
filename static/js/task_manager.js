@@ -49,6 +49,17 @@ taskManager.controller('task_manager_ctrl', function($scope, $http, $cookies, $r
 			$scope.items = response.data;
 			var objects = response.data;
 			var reviews = new Array();
+			reviews = [
+			    [{
+			        "progressFlag": 0
+			    }],
+			    [{
+			        "progressFlag": 1
+			    }],
+			    [{
+			        "progressFlag": 2
+			    }]
+			]
 
 			objects.forEach( 
 				function buildArray(object){

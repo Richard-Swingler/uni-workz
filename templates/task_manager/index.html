@@ -141,11 +141,14 @@
 
                     <ul id="sortable{$ review[0].progressFlag $}" ui-sortable="sortableOptions" ng-model="review" class="connectedSortable apps-container">
                         <li id="item{$ item.id $}" ng-repeat="item in review">
-                            <a href="#" class="list-group-item" ng-click="open(item)">
-                                <p><b>{$ item.name | capitalize $}</b></p>
-                                <p>{$ item.description | limitTo: 30 $}...</p>
-                                <p><u>{$ item.startDate | limitTo: 10 $}</u> --- <u>{$ item.endDate | limitTo: 10 $}</u> <span class="glyphicon glyphicon-remove btn btn-sm btn-danger"  ng-click="deleteTask(item.id); ok()"></span></p>
-                            </a>
+                            <div ng-if="item.id">
+                                <a href="#" class="list-group-item" ng-click="open(item)">
+                                    <p><b>{$ item.name | capitalize $}</b></p>
+                                    <p>{$ item.description | limitTo: 30 $}...</p>
+                                    <p><u>{$ item.startDate | limitTo: 10 $}</u> --- <u>{$ item.endDate | limitTo: 10 $}</u> <span class="glyphicon glyphicon-remove btn btn-sm btn-danger"  ng-click="deleteTask(item.id); ok()"></span></p>
+                                </a>
+                            </div>
+                            
 
 
                             <script type="text/ng-template" id="addManager">
@@ -216,7 +219,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <button type="button" class="btn btn-sm btn-primary" ng-click="today1()">Today</button>
+                                                    <button type="button" class="btn bt`n-sm btn-primary" ng-click="today1()">Today</button>
                                                     <button type="button" class="btn btn-sm btn-danger" ng-click="clear1()">Clear</button>
                                                 </div>
                                             </div>
@@ -262,6 +265,6 @@
                 {% endfor %}
             </div>
         </div>
-
+        <pre>{$ reviews $}</pre>
     </div>
 
