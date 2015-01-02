@@ -11,7 +11,7 @@ def index(request):
     if request.user.is_authenticated():
         user_id = request.user.id
     else:
-        user_id = null
+        user_id = None
 
     users = User.objects.all()
 
