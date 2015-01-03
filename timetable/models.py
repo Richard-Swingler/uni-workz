@@ -12,7 +12,6 @@ class TimetableItem(models.Model):
     #DateTimeField() - for later reference
 
     title = models.CharField(max_length=200)
-    description = models.TextField()
     start = models.CharField(max_length=200)
     end = models.CharField(max_length=200)
     allDay = models.BooleanField(default=False)

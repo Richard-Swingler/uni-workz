@@ -33,33 +33,6 @@ var ModalInstanceCtrl = function ($scope, $modalInstance) {
 // end of angular bootstrap modal -------------------
 
 collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$route, $routeParams, $location, $window) {
-
-	$scope.doesExistInDatabase = function(days){		
-		//for(var i=0; i < days.length; i++){
-		//	if (day[i].id <0){
-		//		displaycross.push = "<button type='submit' class='btn btn-default'> <span class='glyphicon glyphicon-remove'></span> </button>";
-		//	}
-		//	else{
-		//		displaycross.push = "";
-		//	}
-			
-		//}
-		// var displaycross = $sce.trustAsHtml("<button type='submit' class='btn btn-default'> <span class='glyphicon glyphicon-remove'></span> </button>");
-		//$scope.displaycross = displaycross;
-	};
-	/**********************************************************************************************************************************************************
-	/
-	/							READ COMMENTS - CODE STARTS HERE :) - some code commented to allow for hard coded data to work - needs replacing though the logic is in place
-	/
-	/**********************************************************************************************************************************************************************************************/
-	// var buildEvent= function (name, startTime, endTime, title) {
-	// 	return {
-	// 		name: name,
-	// 		start: startTime, //these will probaly need to be formatted to match the correct date time format (most likely change the database type to datetime of use data object based on hour acquired)
-	// 		end: endTime, //Data from db is currently on a time however the weekly view still relates to a specific date so the data needs to be modified (either in db or here) to have the date.
-	// 		title: title, //eg a wednesday slot at 11 am would become a 11am slot on the 17th of december.
-	// 	};
-	// }
 			
 	$scope.loadItems = function(){
 		//hide the modal button --- can remove
@@ -75,7 +48,6 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 			 for (var i=0; i<items.length; i++) {
 			 	var event1 = {"id": items[i].id,
 			 				"title": items[i].title,
-			 				"description": items[i].description, 
 			 				"start": items[i].start, 
 			 				"end": items[i].end, 
 			 				"allDay": items[i].allDay, 
@@ -111,10 +83,9 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 				select: function(start, end, allDay) {
 			
 					// prompt the user to input the following information
-					var title1 = prompt('Title') + " - " + $jq('#loginUserName').text();
-					var description1 = (title1 != null) ? prompt('Description') : null;
+					var title1 = prompt('Title').trim();
 					
-					if(title1 != null && description1!=null){
+					if(title1 !== ''){
 
 						//add the event
 						$http({
@@ -124,8 +95,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 							 	'X-CSRFToken': $cookies.csrftoken
 							 },
 							 data: {
-						        "title": title1, 
-						        "description": description1, 
+						        "title": title1 + " - " + $jq('#loginUserName').text(), 
 						        "start": start, 
 						        "end": end, 
 						        "allDay": false, 

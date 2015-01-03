@@ -5,4 +5,4 @@ class TimetableItemSerializer(serializers.ModelSerializer):
   class Meta:
     model = TimetableItem
     #fields = ('id', 'name', 'description', 'user', 'startTime', 'endTime', 'day')
-    fields = ('id', 'title', 'description', 'start', 'end', 'allDay', 'user')
+    fields = ('id', 'title', 'start', 'end', 'allDay', 'user')
