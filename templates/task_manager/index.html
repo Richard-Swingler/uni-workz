@@ -54,7 +54,7 @@
 
         <div ng-repeat="review in reviews">
             <div class="col-md-3">
-                <div class="list-group"  ng-controller="addManagerModal">
+                <div class="list-group page foldtl"  ng-controller="addManagerModal">
 
                     <a href="#" class="list-group-item active">
                         <span ng-if="review[0].progressFlag == 0">To Do</span>
@@ -140,12 +140,17 @@
                     </script>
 
                     <ul id="sortable{$ review[0].progressFlag $}" ui-sortable="sortableOptions" ng-model="review" class="connectedSortable apps-container">
-                        <li id="item{$ item.id $}" ng-repeat="item in review">
-                            <div ng-if="item.id">
+                        <li id="{$ item.id $}" ng-repeat="item in review">
+                            <div ng-if="item.id" class="itemID">
                                 <a href="#" class="list-group-item" ng-click="open(item)">
                                     <p><b>{$ item.name | capitalize $}</b></p>
                                     <p>{$ item.description | limitTo: 30 $}...</p>
-                                    <p><u>{$ item.startDate | limitTo: 10 $}</u> --- <u>{$ item.endDate | limitTo: 10 $}</u> <span class="glyphicon glyphicon-remove btn btn-sm btn-danger"  ng-click="deleteTask(item.id); ok()"></span></p>
+                                    <p><u>{$ item.startDate | limitTo: 10 $}</u> --- <u>{$ item.endDate | limitTo: 10 $}</u></p>
+                                </a>
+                                <span class="glyphicon glyphicon-remove btn btn-sm btn-danger deleteBt"  ng-click="deleteTask(item.id); ok()"></span>
+                            </div>
+                            <div ng-if="!(item.id)">
+                                <a href="#" class="list-group-item decrease" ng-click="open(item)">
                                 </a>
                             </div>
                             
@@ -219,7 +224,7 @@
                                                     </span>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <button type="button" class="btn bt`n-sm btn-primary" ng-click="today1()">Today</button>
+                                                    <button type="button" class="btn btn-sm btn-primary" ng-click="today1()">Today</button>
                                                     <button type="button" class="btn btn-sm btn-danger" ng-click="clear1()">Clear</button>
                                                 </div>
                                             </div>
@@ -233,8 +238,6 @@
                                     <button class="btn btn-danger" ng-click="deleteTask(task.id); ok()"><span class="glyphicon glyphicon-trash"></span></button>
                                 </div>
                             </script>
-
-
 
                         </li>
                     </ul>
@@ -265,6 +268,5 @@
                 {% endfor %}
             </div>
         </div>
-        <pre>{$ reviews $}</pre>
     </div>
 

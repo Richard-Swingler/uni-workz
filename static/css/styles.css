@@ -49,3 +49,17 @@ ul.connectedSortable {
 .firstLetter{
 	text-transform: capitalize;
 }
+.deleteBt{
+	position: relative;
+	top: -100px;
+	right: -106px;
+	margin-bottom: 0px;
+}
+.itemID{
+	margin-bottom: -30px;
+}
+.decrease{
+	padding: 0px;
+	position: relative;
+	top: -3px;
+}
