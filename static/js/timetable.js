@@ -1,3 +1,4 @@
+//create the controller for the timetable
 var $jq = jQuery.noConflict();
 var collaboratortool = angular.module('timetable', ['ngCookies','ui.bootstrap','ngRoute']).config(function($httpProvider, $interpolateProvider) {
    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'; 
@@ -5,46 +6,17 @@ var collaboratortool = angular.module('timetable', ['ngCookies','ui.bootstrap','
    $interpolateProvider.endSymbol('$}');
 });
 
-// angular bootstrap modal----------------------------
-
-var addEventModal = function($scope, $modal) {
-
-  $scope.open = function () {
-
-    var modalInstance = $modal.open({
-      templateUrl: 'myModalContent.html',
-      controller: 'ModalInstanceCtrl'
-      
-    });
-  };
-};
-
-var ModalInstanceCtrl = function ($scope, $modalInstance) {
-
-  $scope.ok = function () {
-    $modalInstance.close();
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-};
-
-// end of angular bootstrap modal -------------------
-
 collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$route, $routeParams, $location, $window) {
-			
+//fullcalender starts here
 	$scope.loadItems = function(){
-		//hide the modal button --- can remove
-		$jq('#openmodal').hide();
-
+		//get all the project events from the database ------------------------------------------
 		$http.get('/api/v1/timetable/').then(function(response){
 			var items = response.data;
 			var eventList= [];
 
 			var date = new Date();
 
-			//-----LOOP Through items in data and sendts info to build event--------
+			//-----loop through items in the database and for each event create a calendar event
 			 for (var i=0; i<items.length; i++) {
 			 	var event1 = {"id": items[i].id,
 			 				"title": items[i].title,
@@ -53,8 +25,10 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 			 				"allDay": items[i].allDay, 
 			 				"user": items[i].user
 			 			};
-			 	eventList.push(event1); //add all event to events array YOU THEN NEED TO ADD THAT TO THE FULLCALENDAR FUNCTION INSTEAD OF THE HARD CODED DATA
+			 	eventList.push(event1); //add the event to eventList array
 			 }
+
+			 //end get all the project events from the database-----------------------------------
 
 			$jq('#calendar').fullCalendar({
 
@@ -79,10 +53,10 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 				//all the event in the database
 				events: eventList,
 
-				//allow user to add an event ----------------------------------------------------------
+				//add an event ----------------------------------------------------------
 				select: function(start, end, allDay) {
 			
-					// prompt the user to input the following information
+					//prompt the user to input the following information
 					var title1 = prompt('Title').trim();
 					
 					if(title1 !== ''){
@@ -102,7 +76,7 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 						        "user": $jq('#loginUserID').text()
 							}
 						}). success(function(data, status, headers, config) {
-						    	// refresh the page
+						    	//refresh the page
 						    	$window.location.reload();
 						}). error(function(data, status, headers, config) {
 								//console.log('fail');
@@ -121,7 +95,6 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 
 					var eventID = calEvent.id; //get the id of the event clicked
 
-					//start
 					$jq( "#dialog" ).dialog({
 		                  resizable: false,
 		                  height:150,
@@ -144,21 +117,17 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 										  }).
 										  success(function(data, status, headers, config) {
 										      console.log('Task was successfully deleted from the Database');
-										      // refresh the page
+										      //refresh the page
 										      $window.location.reload(); 
 										  }).
 										  error(function(data, status, headers, config) {
-										      //console.log($cookies.csrftoken);
+
 										  });
 
-		                          		//end
-
-		                          		$jq("#dialog").dialog( "close" );
-		                             }
-		                           }
+		                          			$jq("#dialog").dialog( "close" );
+		                             	}
+		                         	}
 		             });
-
-					//end
 
 				}
 
@@ -167,19 +136,9 @@ collaboratortool.controller('timetable_ctrl', function($scope, $http, $cookies,$
 		});
 
 	};
-	// $scope.updateItem = function(data){
-	// 	$http.put('/api/update/').then(function($scope.days){
-	// 	});
-	// }
-	$scope.loadItems();
-	//$scope.doesExistInDatabase($scope.days);
 
-	/**********************************************************************************************************************************************************
-	/
-	/										IF LOST, CONFUSED OR IN NEED OF GUIDANCE - CONTACT RICH..!!
-	/							Appointment hours - any. Avaliable now - next monday! Then around a week after that!
-	/
-	/**********************************************************************************************************************************************************************************************/
+	$scope.loadItems();
+
 });
 
 
