@@ -162,7 +162,9 @@
                                     <h3><b><span class="firstLetter">{$ task.name $}</span> (ID: {$ task.id $})</b></h3>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal" name="form" ng-submit="">
+                                    <form class="form-horizontal" name="form" ng-submit="updateTask(flag, {{ user_id }}, task.id); ok()">
+
+
                                         <div class="form-group">
                                             <label for="name" class="col-sm-3 control-label">Name:</label>
                                             <div class="col-sm-9">
@@ -230,13 +232,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                </div>
-
-                                    <button class="btn btn-success" type="submit" ng-click="updateTask(flag, {{ user_id }}, task.id); ok()"><span class="glyphicon glyphicon-floppy-disk"></span> Update</button>
+                                
+                                    <button type="submit" class="btn btn-success"  ng-click="submitted=true"><span class="glyphicon glyphicon-floppy-disk"></span> Update</button>
                                     <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
                                     <button class="btn btn-danger" ng-click="deleteTask(task.id); ok()"><span class="glyphicon glyphicon-trash"></span></button>
+                                
                                     </form>
-                               
+                               </div>
                             </script>
 
                         </li>
@@ -267,6 +269,7 @@
                     </div>
                 {% endfor %}
             </div>
+
         </div>
     </div>
 

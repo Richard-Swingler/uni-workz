@@ -5,6 +5,7 @@ var taskManager = angular.module('task_manager', ['ui.bootstrap', 'ui.sortable',
    $interpolateProvider.endSymbol('$}');
 });
 
+
 taskManager.controller('task_manager_ctrl', function($scope, $http, $cookies, $location, $window) {
 
 	// Global function to load all tasks to the page when the page is loaded.
