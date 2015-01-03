@@ -70,17 +70,19 @@
                                                     <span ng-if="flag == 2">Done</span></b></h3>
                         </div>
                         <div class="modal-body">
-                            <form class="form-horizontal">
-                                <div class="form-group">
+                            <form class="form-horizontal" name="form" ng-submit="addATask(flag, {{ user_id }}); ok()">
+
+
+                                <div class="form-group" ng-class="{true: 'error'}[submitted && form.add_name.$invalid]">
                                     <label for="name" class="col-sm-3 control-label">Name:</label>
                                     <div class="col-sm-9">
-                                        <input type="text" ng-model="add_name" class="form-control" id="name" placeholder="e.g. Finish drawings">
+                                        <input type="text" ng-model="add_name" class="form-control" id="add_name" placeholder="e.g. Finish drawings" ng-required="true">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="description" class="col-sm-3 control-label">Description:</label>
                                     <div class="col-sm-9">
-                                        <textarea id="description" ng-model="add_description" class="form-control" rows="3"></textarea>
+                                        <textarea id="description" ng-model="add_description" class="form-control" rows="3" ng-required="true"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -130,13 +132,12 @@
                                         </div>
                                     </div>
                                 </div>
-        
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-success" ng-click="addATask(flag, {{ user_id }}); ok()">OK</button>
-                            <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
-                        </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success" ng-click="submitted=true"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+                                    <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
+                                </div>
+                                </form>
+                            </div>
                     </script>
 
                     <ul id="sortable{$ review[0].progressFlag $}" ui-sortable="sortableOptions" ng-model="review" class="connectedSortable apps-container">
@@ -161,17 +162,17 @@
                                     <h3><b><span class="firstLetter">{$ task.name $}</span> (ID: {$ task.id $})</b></h3>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form-horizontal">
+                                    <form class="form-horizontal" name="form" ng-submit="">
                                         <div class="form-group">
                                             <label for="name" class="col-sm-3 control-label">Name:</label>
                                             <div class="col-sm-9">
-                                                <input type="text" ng-model="task_name" class="form-control" id="name" value="{$ task.task_name $}">
+                                                <input type="text" ng-model="task_name" class="form-control" id="name" value="{$ task.task_name $}" ng-required="true">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="description" class="col-sm-3 control-label" >Description:</label>
                                             <div class="col-sm-9">
-                                                <textarea id="description" class="form-control" ng-model="description" rows="5" value="{$ task.description $}"></textarea>
+                                                <textarea id="description" class="form-control" ng-model="description" rows="5" value="{$ task.description $}" ng-required="true"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -229,14 +230,13 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                    </form>
                                 </div>
-                                <div class="modal-footer">
-                                    <button class="btn btn-success" ng-click="updateATask(flag, {{ user_id }}, task.id); ok()"><span class="glyphicon glyphicon-floppy-disk"></span> Update</button>
+
+                                    <button class="btn btn-success" type="submit" ng-click="updateTask(flag, {{ user_id }}, task.id); ok()"><span class="glyphicon glyphicon-floppy-disk"></span> Update</button>
                                     <button class="btn btn-danger" ng-click="cancel()">Cancel</button>
                                     <button class="btn btn-danger" ng-click="deleteTask(task.id); ok()"><span class="glyphicon glyphicon-trash"></span></button>
-                                </div>
+                                    </form>
+                               
                             </script>
 
                         </li>

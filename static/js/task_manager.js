@@ -5,97 +5,76 @@ var taskManager = angular.module('task_manager', ['ui.bootstrap', 'ui.sortable',
    $interpolateProvider.endSymbol('$}');
 });
 
-// Custom Filter for capitalizing all Task Names
-taskManager.filter('capitalize', function() {
-    return function(input, all) {
-      	return (!!input) ? input.replace(/([^\W_]+[^\s-]*) */g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
-    }
-});
-
 taskManager.controller('task_manager_ctrl', function($scope, $http, $cookies, $location, $window) {
 
-
-	$scope.initialize = function(data){
-		$scope.aaa = data;		
-	};
-	
+	// Global function to load all tasks to the page when the page is loaded.
 	$scope.loadItems = function(){
 		$http.get('/api/v1/tasks/').then(function(response){
 			$scope.items = response.data;
-			var objects = response.data;
 			$scope.reviews = new Array();
-			reviews = [[{"progressFlag": 0}],
-			    [{"progressFlag": 1}],
-			    [{"progressFlag": 2}]]
+			// populate the array with default empty values initially
+			reviews = [[{"progressFlag": 0}],[{"progressFlag": 1}],[{"progressFlag": 2}]];
 
-			objects.forEach( 
+			$scope.items.forEach( 
 				function buildArray(object){
 					if(!reviews[object.progressFlag])
 						reviews[object.progressFlag] = [];
 					reviews[object.progressFlag].push(object);
 				}
 			);
-
+			// Make the array global to be used in the templates
 			$scope.reviews = reviews;
 		});
 	}; 
 
+
+	// Options for Sortable function, will update the DB on object move
 	$scope.sortableOptions = {
-		items:'li',
-		start: function(event, ui) {
-            item = ui.item;
-            console.log(item.attr('id'));
-            console.log(ui.item.index());
-            console.log(ui.item.parent().attr('id'));
-        },
-        stop: function(event, ui) {          
-        	item = ui.item;
+		// Perform a function when the object is stopped to be dragged
+        stop: function(event, ui) { 
+        	// Store the ID of the task being dragged
+        	var item = ui.item;
         	var itemId = parseInt(item.attr('id'), 10);
-        	var count = 0;
+        	var i = 0;
         	
+        	// Loop through items in the Array of tasks, it is a multidimensional Array
         	reviews.forEach(
         		function buildArray(object){
-        			count++;
-        			object.forEach(
-		        		function buildArray(obj){
-							if(obj.id){
-								if(obj.id == itemId){
-								 	console.log(count);
-								 	$http({
-										method: 'PUT',
-										url: '/api/v1/tasks/' + itemId, 
-										headers: {
-											'X-CSRFToken': $cookies.csrftoken
-										},
-										data: {
-									        "name": obj.name, 
-									        "description": obj.description, 
-									        "startDate": obj.startDate, 
-									        "endDate": obj.endDate, 
-									        "progressFlag": count-1
-									    }
-									}).
-									success(function(data, status, headers, config) {
-									    console.log('Task was successfully updated in Database');
-									}).
-									error(function(data, status, headers, config) {
-									    console.log($cookies.csrftoken);
-									});
-								}	
-							}
+        			object.forEach( function buildArray(obj){
+						if(obj.id && obj.id == itemId){
+							// Make an HTTP Put request to update data inside of DB
+						 	$http({
+								method: 'PUT',
+								url: '/api/v1/tasks/' + itemId, 
+								headers: {
+									'X-CSRFToken': $cookies.csrftoken
+								},
+								data: {
+							        "name": obj.name, 
+							        "description": obj.description, 
+							        "startDate": obj.startDate, 
+							        "endDate": obj.endDate, 
+							        "progressFlag": i
+							    }
+							}).
+							success(function(data, status, headers, config) {
+							    console.log('Task was successfully updated in Database');
+							}).
+							error(function(data, status, headers, config) {
+							    console.log("Task wasn't successfully updated");
+							});
 						}
-					);
+					});
+					i++;
 				}
 			);
         },
 	    connectWith: ".apps-container",
 	};
 	
-	$scope.addATask = function($flag, $author){
-		var self = this;
-		console.log('User clicked submit with ',
-            self.add_description, self.add_name, self.dt, self.dt1, $author, self.assigned_user);
 
+	// Function to make a POST request to REST API and add a task to the DB
+	$scope.addATask = function($flag, $author){
 		$http({
 			method: 'POST',
 			url: '/api/v1/tasks/', 
@@ -103,28 +82,28 @@ taskManager.controller('task_manager_ctrl', function($scope, $http, $cookies, $l
 				'X-CSRFToken': $cookies.csrftoken
 			},
 			data: {
-		        "name": self.add_name, 
-		        "description": self.add_description, 
+		        "name": this.add_name, 
+		        "description": this.add_description, 
 		        "author": $author, 
 		        "startDate": "2014-12-07T16:23:02Z", 
 		        "endDate": "2014-12-07T16:23:04Z", 
 		        "progressFlag": $flag,
-		        "assignedUser": self.assigned_user
+		        "assignedUser": this.assigned_user
 		    }
 		}).
-		success(function(data, status, headers, config) {
+		success(function(object, status, headers, config) {
 		    console.log('Task was successfully saved to Database');
+		    // Push the newly created Bbject/Task to the array of Tasks to avoid the need for page refreshing
+		    reviews[object.progressFlag].push(object);
 		}).
-		error(function(data, status, headers, config) {
-		    console.log($cookies.csrftoken);
+		error(function(object, status, headers, config) {
+		    console.log("Task wasn't saved to the database");
 		});
 	};
 
-	$scope.updateATask = function($flag, $author, $id){
-		var self = this;
-		console.log('User clicked submit with ',
-            self.task_name, self.description, self.startDate, self.endDate, $author, self.assigned_user, $id);
 
+	// Make a HTTP PUT request to REST API and update the task details 
+	$scope.updateTask = function($flag, $author, $id){
 		$http({
 			method: 'PUT',
 			url: '/api/v1/tasks/' + $id, 
@@ -132,24 +111,40 @@ taskManager.controller('task_manager_ctrl', function($scope, $http, $cookies, $l
 				'X-CSRFToken': $cookies.csrftoken
 			},
 			data: {
-		        "name": self.task_name, 
-		        "description": self.description, 
+		        "name": this.task_name, 
+		        "description": this.description, 
 		        "author": $author, 
-		        "startDate": self.startDate, 
-		        "endDate": self.endDate, 
+		        "startDate": this.startDate, 
+		        "endDate": this.endDate, 
 		        "progressFlag": $flag
 		    }
 		}).
 		success(function(data, status, headers, config) {
-		    console.log('Task was successfully updated in Database');
-		    $window.location.reload();
+			var i = 0;
+		    // However, to be dynamic we need to Update the task from the LISTs as well, to avoid page refreshing
+		    reviews.forEach(
+        		function buildArray(object){
+        			var j = 0;
+        			object.forEach( function updateArray(obj){
+						if(obj.id && obj.id == $id){
+							$scope.reviews[i][j] = data;
+						}
+						j++;
+					});
+					i++;
+				}
+			);
+			console.log('Task was successfully updated in Database');
 		}).
 		error(function(data, status, headers, config) {
-		    console.log($cookies.csrftoken);
+		    console.log("Task wasn't successfully updated in Database");
 		});
 	};
 
+
+	// Function to delete a task from the lists, i.e. To Do, In Progress, Done
 	$scope.deleteTask = function($id){
+		// Make a request to REST API and delete a specific task
 		$http({
 			method: 'DELETE',
 			url: '/api/v1/tasks/' + $id, 
@@ -158,16 +153,39 @@ taskManager.controller('task_manager_ctrl', function($scope, $http, $cookies, $l
 			}
 		}).
 		success(function(data, status, headers, config) {
-		    console.log('Task was successfully deleted from Database');
-		    $window.location.reload();
+			// However, to be dynamic we need to delete the task from the LISTs as well, to avoid page refreshing
+		    var i = 0;
+		    // Loop through items in the Array of tasks, it is a multidimensional Array
+		    reviews.forEach(
+        		function buildArray(object){
+        			var j = 0;
+        			object.forEach( function deleteFromArray(obj){
+						if(obj.id && obj.id == $id){
+							$scope.reviews[i].splice(j,1);
+						}
+						j++;
+					});
+					i++;
+				}
+			);
 		}).
 		error(function(data, status, headers, config) {
-		    console.log($cookies.csrftoken);
+		    console.log("The Task could not be deleted");
 		});
 	}
 
+	// Call the LoadItems function on page request to load all tasks to the lists
 	$scope.loadItems();
 });
+
+
+// Custom Filter for capitalizing all Task Names
+taskManager.filter('capitalize', function() {
+    return function(input, all) {
+      	return (!!input) ? input.replace(/([^\W_]+[^\s-]*) */g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}) : '';
+    }
+});
+
 
 var addManagerModal = function($scope, $modal) {
 	$scope.open = function ($task) {
@@ -181,8 +199,8 @@ var addManagerModal = function($scope, $modal) {
 		$scope.author = $task.author;
 		$scope.assignedUser = $task.assignedUser;
 		$scope.taskId = $task.id;
-		// It ends hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
 
+		// Opens the Modal on click
 		var modalInstance = $modal.open({
 	    	templateUrl: 'addManager',
 	    	scope: $scope,
@@ -200,10 +218,9 @@ var addManagerModal = function($scope, $modal) {
 	};
 };
 
-var ModalInstanceCtrl = function ($scope, $modalInstance, $window) {
+var ModalInstanceCtrl = function ($scope, $modalInstance) {
 	$scope.ok = function () {
 	    $modalInstance.close();
-	    $window.location.reload();
 	};
 	$scope.cancel = function () {
 	    $modalInstance.dismiss('cancel');
